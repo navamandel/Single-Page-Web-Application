@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css" />
+    <title>Full Stack Web Development Project 3</title>
+</head>
+<body>
+    <main>
+        
+    </main>
+
+    <template id="login">
+        <form>
+            <label for="username">Username:</label>
+            <input type="text" id="username" value="" />
+            <br>
+
+            <label for="pw">Password:</label>
+            <input type="password" id="pw" value="" />
+            <br>
+
+            <button type="submit">Log In</button>
+        </form>
+
+        <p>Don't have an account? <a href="#">Register Here</a> </p>
+    </template>
+
+    <template id="register">
+        <form>
+            <label for="firstname">First Name:</label>
+            <input type="text" id="firstname" value="" />
+            <br>
+
+            <label for="lastname">Last Name:</label>
+            <input type="text" id="lastname" value="" />
+            <br>
+
+            <label for="newusername">New Username:</label>
+            <input type="text" id="newusername" value="" />
+            <br>
+
+            <label for="newpw">New Password:</label>
+            <input type="password" id="newpw" value="" />
+            <br>
+
+            <label for="confirmpw">Confirm Password:</label>
+            <input type="password" id="confirmpw" value="" />
+            <br>
+
+            <button type="submit">Create Account</button>
+        </form>
+    </template>
+
+    <template id="nav-bar">
+        <div id="flex-container">
+            <ul>
+                <li>Contacts</li>
+                <li>To Do List</li>
+                <li>Meetings</li>
+            </ul>
+            <button type="button" id="logout">Log Out</button>
+        </div>
+    </template>
+
+    <template id="contacts">
+        <button type="button" id="add-contact">Add Contact</button>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Company</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </template>
+
+    <template id="to-dos">
+        <ol>
+
+        </ol>
+
+        <button type="button" id="add-task">Add New Task</button>
+    </template>
+
+    <template id="meetings">
+        <button type="button" id="create-meeting">Schedule a Meeting</button>
+
+        <ol>
+            <li></li>  <!--Meeting Topic-->
+            <ul>
+                <li></li>  <!--Date, Time and Duration-->
+                <li></li>  <!--Location-->
+                <li></li>  <!--Meeting Leader-->
+            </ul>
+        </ol>
+    </template>
+
+    <script src="main.js"></script>
+    
+</body>
+</html>
