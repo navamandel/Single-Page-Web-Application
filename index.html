@@ -7,9 +7,7 @@
     <title>Full Stack Web Development Project 3</title>
 </head>
 <body>
-    <main>
-        
-    </main>
+    <div id="flex-container"></div>
 
     <template id="login">
         <form>
@@ -54,14 +52,14 @@
     </template>
 
     <template id="nav-bar">
-        <div id="flex-container">
-            <ul>
-                <li>Contacts</li>
-                <li>To Do List</li>
-                <li>Meetings</li>
-            </ul>
-            <button type="button" id="logout">Log Out</button>
-        </div>
+        
+        <ul>
+            <li id="go-to-meetings">Meetings</li>
+            <li id="go-to-tasks">To Do List</li>
+            <li id="go-to-contacts">Contacts</li>
+        </ul>
+        <button type="button" id="logout">Log Out</button>
+        
     </template>
 
     <template id="contacts">
@@ -94,12 +92,7 @@
         <button type="button" id="create-meeting">Schedule a Meeting</button>
 
         <ol>
-            <li></li>  <!--Meeting Topic-->
-            <ul>
-                <li></li>  <!--Date, Time and Duration-->
-                <li></li>  <!--Location-->
-                <li></li>  <!--Meeting Leader-->
-            </ul>
+            
         </ol>
     </template>
 
