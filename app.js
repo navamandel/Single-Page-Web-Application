@@ -1,3 +1,29 @@
+//------ COOKIE HELPER FUNCTIONS ------
+
+function setCookie(name, value, duration) {
+    const expires_ = new Date();
+    expires_.setHours(expires_.getHours() + duration);
+
+    document.cookie = `${encodeURIComponent(name)}=${encodeURIComponent(value)}; expires=${expires_.toUTCString()}; path=/`;
+}
+
+function getCookie(name_) {
+    const cookies = document.cookie.split('; ');
+    for (const cookie of cookies) {
+        const [name, value] = cookie.split('=');
+        if (name === name_) {
+            return decodeURIComponent(value);
+        }
+    }
+    return null;
+}
+
+function deleteCookie(name) {
+    document.cookie = `${name}=; expires=${(new Date(0)).toUTCString()}; path=/`;
+}
+
+//------ END OF COOKIE HELPER FUNCTIONS ------
+
 function User(firstname, lastname, username, password) {
     return {
         username: username,
@@ -54,9 +80,15 @@ function meetingToHTMLString(meeting) {
 
 const app = {
     init: function() {
-        //localStorage.setItem("Current User", "");
-        
-        this.login();
+        let LoggedIn = getCookie('LoggedIn');
+
+        if (!LoggedIn) {
+
+            setCookie('navBar', 'false', 2);
+            this.login();
+        } else {
+            this.meetingsPage();
+        }
     },
 
     show: function(templateId) {
@@ -70,11 +102,15 @@ const app = {
         div_.classList.add('showing');
         div_.appendChild(templateContent);
 
-        if (templateId !== 'login' && templateId !== 'register') {
+        //Fixes bugs with the nav bar
+        let NavBar = getCookie('navBar') === 'true';
+
+        if (templateId !== 'login' && templateId !== 'register' && !NavBar) {
+            
             let nav_bar = document.getElementById('nav-bar');
             let nav_bar_content = nav_bar.content.cloneNode(true);
             let nav_bar_div = document.getElementById('flex-container');
-            nav_bar_div.classList.add('showing');
+            nav_bar_div.classList.add('show-nav-bar');
             nav_bar_div.appendChild(nav_bar_content);
 
             document.getElementById('go-to-meetings').addEventListener('click', (event) => {
@@ -96,7 +132,15 @@ const app = {
                 event.preventDefault();
                 this.logout();
             });
-        } 
+
+            setCookie('navBar', 'true', 2);
+
+        } else if (NavBar && (templateId === 'login' || templateId === 'register')) {
+            let removeNavBar = document.querySelectorAll('.show-nav-bar');
+            removeNavBar.forEach(x => x.replaceChildren());
+            setCookie('navBar', 'false', 2);
+        }
+
         document.body.appendChild(div_);
     },
 
@@ -113,22 +157,30 @@ const app = {
 
             const username_ = document.getElementById('username').value;
             const password_ = document.getElementById('pw').value;
-            //const response = server.setCurrentUser(username_, password_);
 
+            //Now done with FXMLHttpRequest
+            let response_;
+            const fxhr = new FXMLHttpRequest.FXMLHttpRequest();
+            fxhr.open("GET", "users");
+            fxhr.send(username_);
 
-
-            if (response === 404) {
-                alert('User Not Found');
-                return;
-            }
-            if (response === 201) {
-                alert('Password is Incorrect');
-                return;
-            } 
-            if (response === 200) {
-                alert('Log In Successful');
-                this.meetingsPage();
-            }
+            fxhr.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    response_ = JSON.parse(this.response);
+                    
+                    if (response_ !== password_) {
+                        alert('Password is Incorrect');
+                        return;
+                    } 
+                    
+                    setCookie('LoggedIn', username_, 2);
+                    alert('Log In Successful');
+                    app.meetingsPage();
+                } else if (this.status === 404) {
+                    alert('User Not Found');
+                    return;
+                }
+            };
         });
     },
 
@@ -144,12 +196,6 @@ const app = {
             const firstname_ = document.getElementById('firstname').value;
             const lastname_ = document.getElementById('lastname').value;
 
-            
-
-            if (users_ && users_.keys.find(usrname => usrname === username_)) {
-                alert('Username is taken, please choose a different username');
-                return;
-            }
             if (password_ !== confirmPassword) {
                 alert('Passwords do not match');
                 return;
@@ -157,29 +203,67 @@ const app = {
 
             const newuser = new User(firstname_, lastname_, username_, password_);
 
-            
+            //Now uses FXMLHttpRequest
+            const fxhr = new FXMLHttpRequest.FXMLHttpRequest();
+            fxhr.open("POST", "users");
+            fxhr.send(newuser);
 
-            //this.login();
+            fxhr.onreadystatechange = function() {
+                if (this.readyState === 4) {
+                    if (this.status === 402) {
+                        alert('Username is taken, please choose a different username');
+                        return;
+                    }
+                    if (this.status === 200) {
+                        app.login();
+                    }
+                }
+            };
+
         });
     },
 
     logout: function() {
-        server.setCurrentUser('');
+        deleteCookie('LoggedIn');
         this.login();
     },
 
     meetingsPage: function() {
         this.show('meetings');
-        const meetingDetails = server.getMeetingsDetails(true);
-        document.querySelector('ol').innerHTML = meetingDetails;
-        
-        document.getElementById('create-meeting').addEventListener('click', server.addMeeting);
+
+        //Now done with FXMLHttpRequest
+        const fxhr = new FXMLHttpRequest.FXMLHttpRequest();
+        fxhr.open("GET", "meetings");
+        fxhr.send();
+
+        fxhr.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                let response_ = JSON.parse(this.response);
+                let meetingDetails = response_.reduce(
+                    (str, meeting) => str + meetingToHTMLString(meeting),
+                     '');
+                document.querySelector('ol').innerHTML = meetingDetails;
+            }
+        };
     },
 
     contactsPage: function() {
         this.show('contacts');
-        const userContacts = server.getContacts(true);
-        document.querySelector('tbody').innerHTML = userContacts;
+        
+        //Now done with FXMLHttpRequest
+        const fxhr = new FXMLHttpRequest.FXMLHttpRequest();
+        fxhr.open("GET", "contacts");
+        fxhr.send();
+
+        fxhr.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                let response_ = JSON.parse(this.response);
+                let userContacts = response_.reduce(
+                    (str, contact) => str + meetingToHTMLString(contact),
+                     '');
+                document.querySelector('tbody').innerHTML = userContacts;
+            }
+        };
     }
 }
 
