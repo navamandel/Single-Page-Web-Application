@@ -1,9 +1,17 @@
 class Network{
-    receive(request) {
 
-    }
+    send(method, file, destination, data = null) {
+        if (destination === "server1") {
+            
+            return server1.processRequest(method, data);
+            
+        }
 
-    send() {
+        if (destination === "server2") {
+            
+            return server2.processRequest(method, file, data);
+         
+        }
 
     }
 }

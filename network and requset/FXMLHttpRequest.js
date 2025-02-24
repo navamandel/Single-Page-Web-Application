@@ -1,9 +1,10 @@
 class FXMLHttpRequest {
+
     constructor() {
         this.status_ = 100;
         this.readyState_ = 0;
-        this.serverRequest = null;
-        this.response = null;
+        this.response_ = null;
+        this.onreadystatechange = null;
     }
 
     get status() {
@@ -14,26 +15,50 @@ class FXMLHttpRequest {
         return this.readyState_;
     }
 
+    get response() {
+        return this.response_;
+    }
+
     open(method, file) {
-        this.serverRequest = {
-            "method": method,
-            "file": file
-        };
+        this.method = method;
+        this.file = file;
+        this.readyState_ = 1;
     }
 
-    readystatechange() {
+    send(data = null) {
+        this.readyState_ = 2;
+        this.changeReadyStates("readystatechange");
+
+        const sendToNetwork = new Network();
         
+        setTimeout(() => {
+            this.readyState_ = 3;
+            this.changeReadyStates("readystatechange");
+
+            let destination;
+            if (this.file === "users") {
+                destination = "server1";
+            } else {
+                destination = "server2";
+            }
+            
+
+            let serverResponse = sendToNetwork.send(this.method, this.file, destination, data);
+            
+            if (serverResponse) {
+                this.status_ = serverResponse["status"];
+                this.response_ = JSON.stringify(serverResponse["response"]);
+
+                this.readyState_ = 4;
+                this.changeReadyStates("readystatechange");
+            }
+            
+        }, 500);
     }
 
-    send() {
-        if (this.serverRequest["file"] === "users") {
-            if (this.serverRequest["method"] === 'GET');
-            this.readyState_ = 1;
-            this.response = server1.GET();
-            if (this.response) this.readyState_ = 4;
-            if (!this.response) this.readyState_ = 3;
+    changeReadyStates(eventName) {
+        if (eventName === "readystatechange" && typeof this.onreadystatechange === "function") {
+            this.onreadystatechange();
         }
-    }
-
-    
+    }  
 }
