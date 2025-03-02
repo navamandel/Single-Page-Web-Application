@@ -3,100 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css" />
-    <title>Full Stack Web Development Project 3</title>
+    <link rel="stylesheet" href="./CSS/style.css">
+    <link rel="stylesheet" href="./CSS/home.css">
+    <title> Login Page</title>
 </head>
 <body>
-    <div id="flex-container"></div>
 
-    <template id="login">
-        <form>
-            <label for="username">Username:</label>
-            <input type="text" id="username" value="" />
-            <br>
+    <div id="app"></div> <!-- כאן נטען את הדפים -->
 
-            <label for="pw">Password:</label>
-            <input type="password" id="pw" value="" />
-            <br>
-
-            <button type="submit">Log In</button>
-        </form>
-
-        <p>Don't have an account? <a href="#">Register Here</a> </p>
+    <!--   טמפלט עמוד ההתחברות והרשמה-->
+    <template id="login-template">
+        <div class="container" id="container">
+            <div class="form-container sign-in">
+                <form id="login-form">
+                    <h1>Sign In</h1>
+                    <input type="text" id="username" placeholder="Username">
+                    <input type="password" id="pw" placeholder="Password">
+                    <button type="submit">Log In</button>
+                </form>
+            </div>
+            <div class="form-container sign-up">
+                <form id="register-form">
+                    <h1>Create Account</h1>
+                    <input type="text" id="firstname" placeholder="First Name">
+                    <input type="text" id="lastname" placeholder="Last Name">
+                    <input type="text" id="newusername" placeholder="Username">
+                    <input type="password" id="newpw" placeholder="Password">
+                    <input type="password" id="confirmpw" placeholder="Confirm Password">
+                    <button type="submit">Sign Up</button>
+                </form>
+            </div>
+            <div class="toggle-container">
+                <div class="toggle">
+                    <div class="toggle-panel toggle-left">
+                        <h1>Welcome Back!</h1>
+                        <p>Enter your personal details to log in.</p>
+                        <button id="login-btn">Sign In</button>
+                    </div>
+                    <div class="toggle-panel toggle-right">
+                        <h1>Hello, Friend!</h1>
+                        <p>Register with your personal details to start.</p>
+                        <button id="register-btn">Sign Up</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </template>
 
-    <template id="register">
-        <form>
-            <label for="firstname">First Name:</label>
-            <input type="text" id="firstname" value="" />
-            <br>
-
-            <label for="lastname">Last Name:</label>
-            <input type="text" id="lastname" value="" />
-            <br>
-
-            <label for="newusername">New Username:</label>
-            <input type="text" id="newusername" value="" />
-            <br>
-
-            <label for="newpw">New Password:</label>
-            <input type="password" id="newpw" value="" />
-            <br>
-
-            <label for="confirmpw">Confirm Password:</label>
-            <input type="password" id="confirmpw" value="" />
-            <br>
-
-            <button type="submit">Create Account</button>
-        </form>
-    </template>
-
-    <template id="nav-bar">
-        
-        <ul>
-            <li id="go-to-meetings">Meetings</li>
-            <li id="go-to-tasks">To Do List</li>
-            <li id="go-to-contacts">Contacts</li>
-        </ul>
-        <button type="button" id="logout">Log Out</button>
-        
-    </template>
-
-    <template id="contacts">
-        <button type="button" id="add-contact">Add Contact</button>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Company</th>
-                    <th>Phone</th>
-                    <th>Email</th>
-                </tr>
-            </thead>
-            <tbody>
-
-            </tbody>
-        </table>
-    </template>
-
-    <template id="to-dos">
-        <ol>
-
-        </ol>
-
-        <button type="button" id="add-task">Add New Task</button>
-    </template>
-
-    <template id="meetings">
-        <button type="button" id="create-meeting">Schedule a Meeting</button>
-
-        <ol>
-            
-        </ol>
-    </template>
-
-    <script src="app.js"></script>
+    <template id="home-template">
+        <div class="home-container">
+            <!-- Navbar -->
+            <nav class="navbar">
+                <h2>Home</h2>
+                <button id="logout-btn">Logout</button>
+            </nav>
     
+            <!-- ברכת שלום -->
+            <div class="welcome-section">
+                <h1>Welcome, <span id="user-name">User</span>! 👋</h1>
+                <p>Here is an overview of your activities.</p>
+            </div>
+    
+            <!-- קישורים מהירים -->
+            <div class="quick-links">
+                <div class="card" id="go-to-tasks">
+                    <h3>✅ Tasks</h3>
+                    <p>Manage your tasks</p>
+                </div>
+                <div class="card" id="go-to-meetings">
+                    <h3>📅 Meetings</h3>
+                    <p>View upcoming meetings</p>
+                </div>
+                <div class="card" id="go-to-contacts">
+                    <h3>👤 Contacts</h3>
+                    <p>Manage your contacts</p>
+                </div>
+            </div>
+    
+            <!-- סטטיסטיקות -->
+            <div class="stats">
+                <h3>Your Stats 📊</h3>
+                <ul>
+                    <li>📇 <span id="contact-count">0</span> Contacts</li>
+                    <li>✅ <span id="task-count">0</span> Tasks Pending</li>
+                    <li>📅 <span id="meeting-count">0</span> Upcoming Meetings</li>
+                </ul>
+            </div>
+        </div>
+    </template>
+    
+    <script  src="./JS/auth.js"></script>
+    <script  src="./JS/home.js"></script>
+    <script  src="./JS/login.js"></script>
+    <script  src="./JS/app.js"></script>
+  
 </body>
 </html>
