@@ -1,4 +1,6 @@
-/* ודא שהעמוד יתפרס על כל המסך */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+/* Ensure full screen usage */
 html, body {
     height: 100%;
     width: 100%;
@@ -6,68 +8,294 @@ html, body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    font-family: 'Montserrat', sans-serif;
 }
-
-/* עיצוב מיכל עמוד הבית */
-.home-container {
-    width: 100%;
-    height: 100vh; /* תופס את כל המסך */
+.home-container{
+    display: flex;
+    flex-direction: row; /* מסדר את הניווט והתוכן זה לצד זה */
+    width: 100vw;
+    min-height: 100vh;
+    background: #492799;
+}
+/* Sidebar – Always Open */
+.sidebar {
+    width: 250px;
+    min-height: 100vh;
+    background-color: #492799;
+    color: white;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(to right, #e2e2e2, #c9d6ff);
+    align-items: flex-start;
+    padding: 30px 20px;
+    left: 0;
+    top: 0;
+    z-index: 1000;
 }
 
-/* עיצוב הניווט */
-.navbar {
+/* Sidebar Menu */
+.menu {
+    list-style: none;
+    padding: 0;
     width: 100%;
-    height: 70px;
-    background-color: #512da8;
-    color: white;
-    text-align: center;
-    font-size: 24px;
+}
+
+.menu li {
+    padding: 15px 10px;
+    cursor: pointer;
+    font-size: 22px;
+    white-space: nowrap;
+    transition: background 0.2s;
+    margin-top: 25px;
+}
+
+.menu li:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+}
+
+/* Adjust main content to fit sidebar */
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    background-color: #FEFBF3 ;
+    margin: 30px 0;
+    margin-right: 30px;
+    h2{
+        font-size: 30px;
+        margin-bottom: 20px;
+        color: #492799 ;
+    }
+}
+
+/* Header Section */
+.header-box {
+    width: 70%;
+    background: #FEFBF3;
+    padding: 20px;
+    margin-left: 40px;
+    margin-top: 80px;
+    border-radius: 12px;
+    text-align: left;
+    font-size: 20px;
+    font-weight: bold;
+    color: #512da8;    
+}
+
+.header-box h3 {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.header-box p {
+    font-size: 25px;
+    margin-bottom: 15px;
+}
+
+/* Main Container */
+.home-container {
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+}
+
+/* Schedule & Tasks Container */
+.schedule-tasks-container {
+margin-top: 50px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
+    align-items: flex-start;
+    width: 90%;
+    margin: 20px;
+    gap: 20px;
+    flex-direction: row-reverse;
+    h4{
+        color: #492799;
+    }
 }
 
-/* קישורים מהירים */
-.quick-links {
+/* Course Timetable */
+.course-timetable {
+    flex: 1;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    color: #EEC3B4;
+}
+
+.timetable-grid {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 5px;
+    align-items: start;
+    position: relative;
+}
+
+.time-slot {
+    font-weight: bold;
+    text-align: center;
+    background: #f9f2ef;
+    padding: 10px;
+    border-radius: 5px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+}
+
+.course-container {
+    position: relative;
+    height: 50px;
+}
+
+.course-block {
+    position: absolute;
+    background: #4927991b;
+    color: black;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    width: 90%;
+}
+
+/* Task List */
+.task-list {
+    flex: 2;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+}
+
+.task-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    width: 100%;
+    background: #EEC3B4;
+    border-radius: 8px;
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    backdrop-filter: blur(10px); 
+}
+.task-item:nth-child(3n + 1) { 
+    background: #0800ff10; /* ורוד-קורל שקוף */
+}
+
+.task-item:nth-child(3n + 2) { 
+    background:#7927991b  /* כחול שקוף */
+}
+
+.task-item:nth-child(3n + 3) { 
+    background: #ef958733 /* אפרסק שקוף */
+}
+
+
+.task-item h4 {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: black;
+}
+
+.task-item p {
+    white-space: pre-line;
+    font-size: 18px;
+    color: black;
+}
+
+.task-info {
+    flex: 1;
+    text-align: left;
+}
+
+.task-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+}
+
+.task-buttons button {
+    border: none;
+    padding: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 100px;
+    text-align: center;
+}
+
+.task-complete {
+    background-color: #492799;
+    color: white;
+}
+
+.task-delete {
+    background-color: #EF9587;
+    color: white;
+}
+
+.modal {
+    display: none; /* כדי שהפופ-אפ לא יוצג בהתחלה */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
-    gap: 20px;
-    margin-top: 20px;
-    flex-wrap: wrap; /* למנוע בעיות במסכים קטנים */
-    width: 100%;
-    max-width: 1200px; /* מגביל לרוחב מקסימלי */
+    align-items: center;
 }
 
-/* קלפים */
-.card {
-    background-color: white;
+.modal-content {
+    background: #fff;
     padding: 20px;
     border-radius: 10px;
     text-align: center;
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
-    width: 300px; /* יותר גדול ומרווח */
-    transition: transform 0.2s ease-in-out;
+    width: 300px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
 }
 
-.card:hover {
-    transform: scale(1.05);
+.modal-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
 }
 
-/* סטטיסטיקות */
-.stats {
-    margin-top: 30px;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 10px;
-    text-align: center;
-    width: 80%;
-    max-width: 600px;
+.modal-buttons button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#confirm-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#cancel-btn {
+    background-color: #f44336;
+    color: white;
+}
+.completed {
+    text-decoration: line-through;
+    opacity: 0.7;
+    background-color: #d4edda; /* ירוק בהיר */
 }

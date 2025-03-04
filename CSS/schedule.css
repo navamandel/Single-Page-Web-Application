@@ -1,0 +1,111 @@
+.weekly-schedule-container {
+    flex: 1;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    overflow-x: auto;
+}
+
+.weekly-grid {
+    display: grid;
+    grid-template-columns: 100px repeat(7, 1fr); /* עמודה לשעות + 7 ימים */
+    gap: 5px;
+    align-items: start;
+    position: relative;
+}
+
+/* עיצוב שורת השעות */
+.time-slot {
+    font-weight: bold;
+    text-align: center;
+    background: #f9f2ef;
+    padding: 10px;
+    border-radius: 5px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+}
+
+/* קורסים בתוך הטבלה */
+.course-container {
+    position: relative;
+    height: 50px;
+}
+
+.course-block {
+    position: absolute;
+    background: #4927991b;
+    color: black;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    width: 90%;
+}
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 300px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+}
+
+.modal-buttons button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#confirm-delete {
+    background-color: #f44336;
+    color: white;
+}
+
+#cancel-delete, #cancel-btn {
+    background-color: #ccc;
+    color: black;
+}
+
+#save-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#add-course-btn {
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: #512da8;
+    color: white;
+    border: none;
+    margin: 20px;
+}

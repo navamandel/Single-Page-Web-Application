@@ -16,7 +16,12 @@ function loadLoginPage() {
     loginBtn.addEventListener("click", () => {
         container.classList.remove("active");
     });
+}
 
+function handleFormSubmission(){
+        debugger
+        console.log("hendle form ");
+        
     // Handle form submission
     document.getElementById("app").addEventListener("submit", (event) => {
         event.preventDefault();
@@ -26,10 +31,11 @@ function loadLoginPage() {
             const username = document.getElementById("username").value.trim();
             const password = document.getElementById("pw").value.trim();
 
-            if (window.authenticateUser(username, password)) {
+            if (manageUsers("login", { username, password })) {
                 console.log("Login successful:", username);
                 navigateTo("home");
             } 
+
         } else if (form.id === "register-form") {
             const newUsername = document.getElementById("newusername").value.trim();
             const newPassword = document.getElementById("newpw").value.trim();
@@ -45,12 +51,13 @@ function loadLoginPage() {
                 return;
             }
 
-            if (window.registerUser(newUsername, newPassword)) {
+            if (manageUsers("register", { username, password })) {
                 navigateTo("home");
             }
         }
     });
-}
+ }
+
 
 // Make function globally accessible
 window.loadLoginPage = loadLoginPage;

@@ -6,20 +6,18 @@ document.addEventListener("DOMContentLoaded", () => {
             const content = template.content.cloneNode(true);
             document.getElementById("app").innerHTML = "";
             document.getElementById("app").appendChild(content);
+            console.log("hii");
 
             // Dynamically load the correct JavaScript file based on the page
             switch (view) {
                 case "home":
-                    import("./home.js").then(module => module.loadHomePage());
+                    window.loadHomePage();
                     break;
                 case "tasks":
-                    import("./tasks.js").then(module => module.loadTasksPage());
+                    window.loadTasksPage();
                     break;
-                case "meetings":
-                    import("./meetings.js").then(module => module.loadMeetingsPage());
-                    break;
-                case "contacts":
-                    import("./contacts.js").then(module => module.loadContactsPage());
+                case "schedule":
+                    window.loadWeeklySchedule();
                     break;
                 case "login":
                     window.loadLoginPage();
@@ -29,13 +27,18 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
     }
+    //navigateTo("login");
 
-    // Check if the user is logged in
-    if (getCurrentUser()) {
-        navigateTo("home");
+   // Check if the user is logged in
+   if (getCurrentUser()) {
+      //  navigateTo("home");
+        navigateTo("schedule");
+console.log("hiiii");
+
+
     } else {
         navigateTo("login");
-    }
+    }  
 
     // Make navigateTo globally accessible
     window.navigateTo = navigateTo;

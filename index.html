@@ -5,32 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./CSS/style.css">
     <link rel="stylesheet" href="./CSS/home.css">
-    <title> Login Page</title>
+    <link rel="stylesheet" href="./CSS/schedule.css">
+
+    <title></title>
 </head>
 <body>
 
-    <div id="app"></div> <!-- כאן נטען את הדפים -->
+    <div id="app"></div> 
 
-    <!--   טמפלט עמוד ההתחברות והרשמה-->
     <template id="login-template">
         <div class="container" id="container">
             <div class="form-container sign-in">
-                <form id="login-form">
+                <form id="login-form" >
                     <h1>Sign In</h1>
                     <input type="text" id="username" placeholder="Username">
                     <input type="password" id="pw" placeholder="Password">
-                    <button type="submit">Log In</button>
+                    <button type="submit" onclick="handleFormSubmission()">Log In</button>
                 </form>
             </div>
             <div class="form-container sign-up">
-                <form id="register-form">
+                <form id="register-form" >
                     <h1>Create Account</h1>
                     <input type="text" id="firstname" placeholder="First Name">
                     <input type="text" id="lastname" placeholder="Last Name">
                     <input type="text" id="newusername" placeholder="Username">
                     <input type="password" id="newpw" placeholder="Password">
                     <input type="password" id="confirmpw" placeholder="Confirm Password">
-                    <button type="submit">Sign Up</button>
+                    <button type="submit" onclick="handleFormSubmission()">Sign Up</button>
                 </form>
             </div>
             <div class="toggle-container">
@@ -38,7 +39,7 @@
                     <div class="toggle-panel toggle-left">
                         <h1>Welcome Back!</h1>
                         <p>Enter your personal details to log in.</p>
-                        <button id="login-btn">Sign In</button>
+                        <button id="login-btn" >Sign In</button>
                     </div>
                     <div class="toggle-panel toggle-right">
                         <h1>Hello, Friend!</h1>
@@ -52,49 +53,230 @@
 
     <template id="home-template">
         <div class="home-container">
-            <!-- Navbar -->
-            <nav class="navbar">
-                <h2>Home</h2>
-                <button id="logout-btn">Logout</button>
-            </nav>
+            <!-- Sidebar (Hamburger Menu) -->
+                    <nav class="sidebar">
+                        <button  ></button>
+                        <ul class="menu">
+                            <li onclick="navigateTo('home')">LOGO</li>
+                            <li onclick="navigateTo('home')">Home</li>
+                            <li onclick="navigateTo('schedule')">Weekly Schedule</li>
+                            <li onclick="navigateTo('tasks')">Tasks</li>
+                            <li onclick="navigateTo('login')">LogOut</li>
+                        </ul>
+                    </nav>
+
+            <!-- Main Content -->
+            <div class="main-content">
+                <div class="header-box">
+                    <h3>Welcome, <span id="user-name">User</span>!</h3>
+                    <p>Here is an overview of your schedule for today.</p>
+
+                </div>
     
-            <!-- ברכת שלום -->
-            <div class="welcome-section">
-                <h1>Welcome, <span id="user-name">User</span>! 👋</h1>
-                <p>Here is an overview of your activities.</p>
+                <div class="schedule-tasks-container">
+                <!-- Course Timetable Section -->
+                <div class="course-timetable">
+                    <h2>Today's Schedule</h2>
+                    <div class="timetable-grid" id="timetable-grid">
+                        <!-- Dynamic course data will be inserted here -->
+                    </div>
+                </div>                
+                    <!-- Task List -->
+                    <div class="task-list">
+                        <h2>Today's Tasks</h2>
+                        <ul id="task-list">
+                            <!-- Dynamic tasks will be inserted here -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div id="custom-modal" class="modal">
+                <div class="modal-content">
+                    <p id="modal-message"></p>
+                    <div class="modal-buttons">
+                        <button id="confirm-btn">Yes</button>
+                        <button id="cancel-btn">Cancel</button>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </template>
+    <template id="schedule-template">
+        <div class="home-container">
+            <!-- Sidebar (תפריט צדדי) -->
+            <div class="sidebar">
+                <nav class="sidebar">
+                    <ul class="menu">
+                        <li onclick="navigateTo('home')">LOGO</li>
+                        <li onclick="navigateTo('home')">Home</li>
+                        <li onclick="navigateTo('schedule')">Weekly Schedule</li>
+                        <li onclick="navigateTo('tasks')">Tasks</li>
+                        <li onclick="navigateTo('login')">LogOut</li>
+                    </ul>
+                </nav>
             </div>
     
-            <!-- קישורים מהירים -->
-            <div class="quick-links">
-                <div class="card" id="go-to-tasks">
-                    <h3>✅ Tasks</h3>
-                    <p>Manage your tasks</p>
+            <!-- תוכן מרכזי -->
+            <div class="main-content">
+                <div class="header-box">
+                    <h3>Weekly Schedule</h3>
+                    <p>Here is an overview of your schedule for the entire week.</p>
                 </div>
-                <div class="card" id="go-to-meetings">
-                    <h3>📅 Meetings</h3>
-                    <p>View upcoming meetings</p>
-                </div>
-                <div class="card" id="go-to-contacts">
-                    <h3>👤 Contacts</h3>
-                    <p>Manage your contacts</p>
+    
+                <!-- טבלת לוח שבועי -->
+                <div class="weekly-schedule-container">
+                    <button id="add-course-btn" onclick="openAddCourseModal()">➕ Add Course</button>
+
+                    <div class="weekly-grid" id="weekly-grid">
+                        <!-- הקורסים יוכנסו כאן דינאמית -->
+                    </div>
                 </div>
             </div>
+        </div>
+        <!-- פופ-אפ כללי לעריכה/מחיקה -->
+<div id="course-modal" class="modal">
+    <div class="modal-content">
+        <h3 id="modal-title">Edit Course</h3>
+        <form id="course-form">
+            <label>Course Name:</label>
+            <input type="text" id="course-name" required>
+            <label>Day:</label>
+            <select id="course-day">
+                <option value="Sunday">Sunday</option>
+                <option value="Monday">Monday</option>
+                <option value="Tuesday">Tuesday</option>
+                <option value="Wednesday">Wednesday</option>
+                <option value="Thursday">Thursday</option>
+                <option value="Friday">Friday</option>
+            </select>
+            <label>Start Time:</label>
+            <input type="time" id="course-start">
+            <label>End Time:</label>
+            <input type="time" id="course-end">
+            <div class="modal-buttons">
+                <button type="submit" id="save-btn">Save</button>
+                <button type="button" id="cancel-btn">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- פופ-אפ למחיקה -->
+<div id="delete-modal" class="modal">
+    <div class="modal-content">
+        <h3>Are you sure you want to delete this course?</h3>
+        <div class="modal-buttons">
+            <button id="confirm-delete">Yes</button>
+            <button id="cancel-delete">Cancel</button>
+        </div>
+    </div>
+</div>
+<div id="add-course-modal" class="modal">
+    <div class="modal-content">
+        <h3>Add New Course</h3>
+        <label for="new-course-name">Course Name:</label>
+        <input type="text" id="new-course-name">
+
+        <label for="new-course-day">Day:</label>
+        <select id="new-course-day">
+            <option value="Monday">Monday</option>
+            <option value="Tuesday">Tuesday</option>
+            <option value="Wednesday">Wednesday</option>
+            <option value="Thursday">Thursday</option>
+            <option value="Friday">Friday</option>
+            <option value="Saturday">Saturday</option>
+            <option value="Sunday">Sunday</option>
+        </select>
+
+        <label for="new-course-start">Start Time:</label>
+        <input type="time" id="new-course-start">
+
+        <label for="new-course-end">End Time:</label>
+        <input type="time" id="new-course-end">
+
+        <div class="modal-buttons">
+            <button id="save-new-course-btn" onclick="saveNewCourse()">Save</button>
+            <button onclick="closeModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- כפתור הוספת קורס חדש -->
+<button id="add-course-btn">+ Add Course</button>
+
+    </template>
+    <template id="tasks-template">
+        <div class="home-container">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <nav class="sidebar">
+                    <ul class="menu">
+                        <li onclick="navigateTo('home')">Home</li>
+                        <li onclick="navigateTo('weekly-schedule')">Weekly Schedule</li>
+                        <li onclick="navigateTo('tasks')">Tasks</li>
+                    </ul>
+                </nav>
+            </div>
     
-            <!-- סטטיסטיקות -->
-            <div class="stats">
-                <h3>Your Stats 📊</h3>
-                <ul>
-                    <li>📇 <span id="contact-count">0</span> Contacts</li>
-                    <li>✅ <span id="task-count">0</span> Tasks Pending</li>
-                    <li>📅 <span id="meeting-count">0</span> Upcoming Meetings</li>
-                </ul>
+            <!-- Main Content -->
+            <div class="main-content">
+                <div class="header-box">
+                    <h3>Task Management</h3>
+                    <button id="add-task-btn" onclick="openTaskModal()">➕ Add Task</button>
+                </div>
+    
+                <!-- Task Categories -->
+                <div class="task-list-container">
+                    <div class="task-category">
+                        <h2>New Tasks</h2>
+                        <ul id="new-task-list"></ul>
+                    </div>
+    
+                    <div class="task-category">
+                        <h2>In Progress</h2>
+                        <ul id="in-progress-task-list"></ul>
+                    </div>
+    
+                    <div class="task-category">
+                        <h2>Completed Tasks</h2>
+                        <ul id="completed-task-list"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- פופ-אפ להוספת משימה -->
+        <div id="task-modal" class="modal">
+            <div class="modal-content">
+                <h3>Add New Task</h3>
+                <label for="new-task-name">Task Name:</label>
+                <input type="text" id="new-task-name">
+    
+                <label for="new-task-desc">Description:</label>
+                <textarea id="new-task-desc"></textarea>
+    
+                <label for="new-task-date">Due Date:</label>
+                <input type="date" id="new-task-date">
+    
+                <div class="modal-buttons">
+                    <button onclick="saveNewTask()">Save</button>
+                    <button onclick="closeModal()">Cancel</button>
+                </div>
             </div>
         </div>
     </template>
     
+    
+    
+    
+    
     <script  src="./JS/auth.js"></script>
     <script  src="./JS/home.js"></script>
     <script  src="./JS/login.js"></script>
+    <script src="./JS/schedule.js"></script>
     <script  src="./JS/app.js"></script>
   
 </body>

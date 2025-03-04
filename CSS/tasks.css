@@ -1,0 +1,59 @@
+.task-list-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px;
+}
+
+.task-category {
+    flex: 1;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.task-category h2 {
+    text-align: center;
+    color: #492799;
+}
+
+.task-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    border-radius: 8px;
+    background: #EEC3B4;
+    margin-bottom: 10px;
+}
+
+.task-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.task-buttons button {
+    border: none;
+    padding: 8px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.task-complete {
+    background-color: #492799;
+    color: white;
+}
+
+.task-delete {
+    background-color: #EF9587;
+    color: white;
+}
+
+/* מצב של משימה שהושלמה */
+.completed {
+    text-decoration: line-through;
+    opacity: 0.7;
+    background-color: #d4edda;
+}
