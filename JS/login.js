@@ -3,11 +3,6 @@ function loadLoginPage() {
     const registerBtn = document.getElementById("register-btn");
     const loginBtn = document.getElementById("login-btn");
 
-    if (!container || !registerBtn || !loginBtn) {
-        console.error("Login elements not found");
-        return;
-    }
-
     // Toggle between login and registration forms
     registerBtn.addEventListener("click", () => {
         container.classList.add("active");
@@ -19,8 +14,6 @@ function loadLoginPage() {
 }
 
 function handleFormSubmission(){
-        debugger
-        console.log("hendle form ");
         
     // Handle form submission
     document.getElementById("app").addEventListener("submit", (event) => {
@@ -33,31 +26,27 @@ function handleFormSubmission(){
 
             if (manageUsers("login", { username, password })) {
                 console.log("Login successful:", username);
-                navigateTo("home");
+             loadHomePage();
             } 
 
         } else if (form.id === "register-form") {
-            const newUsername = document.getElementById("newusername").value.trim();
-            const newPassword = document.getElementById("newpw").value.trim();
+            const username = document.getElementById("newusername").value.trim();
+            const password = document.getElementById("newpw").value.trim();
             const confirmPassword = document.getElementById("confirmpw").value.trim();
 
-            if (!newUsername || !newPassword) {
+            if (!username || !password) {
                 alert("All fields are required!");
                 return;
             }
 
-            if (newPassword !== confirmPassword) {
+            if (password !== confirmPassword) {
                 alert("Passwords do not match!");
                 return;
             }
 
-            if (manageUsers("register", { username, password })) {
-                navigateTo("home");
+            if (manageUsers("register",{ username, password })) {
+                loadHomePage();
             }
         }
     });
  }
-
-
-// Make function globally accessible
-window.loadLoginPage = loadLoginPage;

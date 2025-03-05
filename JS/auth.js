@@ -1,21 +1,5 @@
-// ---------- ניהול משתמשים באמצעות LocalStorage ----------
 
 // פונקציה ראשית לניהול משתמשים
-function manageUsers(action, data) {
-    switch (action) {
-        case "register":
-            return registerUser(data);
-        case "login":
-            return authenticateUser(data);
-        case "logout":
-            return logoutUser();
-        case "getCurrentUser":
-            return getCurrentUser();
-        default:
-            console.error("פעולה לא מזוהה ב-manageUsers");
-            return null;
-    }
-}
 
 // פונקציה לניהול חיבור המשתמש (Session)
 function handleSession(action, user = null) {
@@ -30,6 +14,42 @@ function handleSession(action, user = null) {
             break;
         default:
             console.error("פעולה לא מזוהה ב-handleSession");
+    }
+}
+
+function getCurrentUser() {
+    return handleSession("get");
+}
+ 
+function handleSession(action, user = null) {
+    switch (action) {
+        case "set":
+            sessionStorage.setItem("currentUser", JSON.stringify(user));
+            break;
+        case "get":
+            return JSON.parse(sessionStorage.getItem("currentUser"));
+        case "remove":
+            sessionStorage.removeItem("currentUser");
+            break;
+        default:
+            console.error("פעולה לא מזוהה ב-handleSession");
+    }
+}
+function manageUsers(action, data) {
+    console.log(data);
+    
+    switch (action) {
+        case "register":
+            return registerUser(data);
+        case "login":
+            return authenticateUser(data);
+        case "logout":
+            return logoutUser();
+        case "getCurrentUser":
+            return getCurrentUser();
+        default:
+            console.error("פעולה לא מזוהה ב-manageUsers");
+            return null;
     }
 }
 
@@ -64,6 +84,8 @@ function authenticateUser({ username, password }) {
 
 // הרשמת משתמש חדש
 function registerUser({ username, password }) {
+    console.log(username,password);
+    
     if (!username || !password) {
         alert("יש למלא את כל השדות!");
         return false;
@@ -93,4 +115,5 @@ function logoutUser() {
     alert("התנתקת בהצלחה!");
     return true;
 }
+
 

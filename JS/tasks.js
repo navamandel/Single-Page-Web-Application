@@ -1,4 +1,11 @@
 function loadTasksPage() {
+
+    const template = document.getElementById(`tasks-template`);
+    const content = template.content.cloneNode(true);
+    document.getElementById("app").innerHTML = "";
+    document.getElementById("app").appendChild(content);
+
+
     const tasks = JSON.parse(localStorage.getItem("allTasks")) || [];
     const taskList = document.getElementById("full-task-list");
     taskList.innerHTML = ""; // ניקוי נתונים ישנים
@@ -60,29 +67,30 @@ function saveNewTask() {
         return;
     }
 
-    let tasks = JSON.parse(localStorage.getItem("allTasks")) || [];
+    let tasks = JSON.parse(localStorage.getItem("Tasks")) || [];
     
     tasks.push({ name, description, completed: false });
 
-    localStorage.setItem("allTasks", JSON.stringify(tasks));
+    localStorage.setItem("Tasks", JSON.stringify(tasks));
 
     closeModal();
     loadTasksPage(); // נטען מחדש את העמוד
 }
-function deleteTask(index) {
+/* function deleteTask(index) {
     if (confirm("Are you sure you want to delete this task?")) {
-        let tasks = JSON.parse(localStorage.getItem("allTasks")) || [];
+        let tasks = JSON.parse(localStorage.getItem("Tasks")) || [];
         tasks.splice(index, 1);
-        localStorage.setItem("allTasks", JSON.stringify(tasks));
+        localStorage.setItem("Tasks", JSON.stringify(tasks));
         loadTasksPage();
     }
 }
 function toggleTaskCompletion(index) {
-    let tasks = JSON.parse(localStorage.getItem("allTasks")) || [];
+    let tasks = JSON.parse(localStorage.getItem("Tasks")) || [];
 
     if (confirm(`Mark "${tasks[index].name}" as complete?`)) {
         tasks[index].completed = true;
-        localStorage.setItem("allTasks", JSON.stringify(tasks));
+        localStorage.setItem("Tasks", JSON.stringify(tasks));
         loadTasksPage();
     }
 }
+ */

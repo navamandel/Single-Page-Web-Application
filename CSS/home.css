@@ -10,50 +10,24 @@ html, body {
     flex-direction: column;
     font-family: 'Montserrat', sans-serif;
 }
+
 .home-container{
     display: flex;
-    flex-direction: row; /* מסדר את הניווט והתוכן זה לצד זה */
+    flex-direction: row;
     width: 100vw;
     min-height: 100vh;
     background: #492799;
 }
-/* Sidebar – Always Open */
-.sidebar {
-    width: 250px;
+
+
+/* Main Container */
+.home-container {
+    width: 100vw;
     min-height: 100vh;
-    background-color: #492799;
-    color: white;
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 30px 20px;
-    left: 0;
-    top: 0;
-    z-index: 1000;
+    flex-direction: row;
+    margin: 10px;
 }
-
-/* Sidebar Menu */
-.menu {
-    list-style: none;
-    padding: 0;
-    width: 100%;
-}
-
-.menu li {
-    padding: 15px 10px;
-    cursor: pointer;
-    font-size: 22px;
-    white-space: nowrap;
-    transition: background 0.2s;
-    margin-top: 25px;
-}
-
-.menu li:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 5px;
-}
-
-/* Adjust main content to fit sidebar */
 .main-content {
     flex-grow: 1;
     display: flex;
@@ -68,40 +42,6 @@ html, body {
         color: #492799 ;
     }
 }
-
-/* Header Section */
-.header-box {
-    width: 70%;
-    background: #FEFBF3;
-    padding: 20px;
-    margin-left: 40px;
-    margin-top: 80px;
-    border-radius: 12px;
-    text-align: left;
-    font-size: 20px;
-    font-weight: bold;
-    color: #512da8;    
-}
-
-.header-box h3 {
-    font-size: 40px;
-    margin-bottom: 10px;
-}
-
-.header-box p {
-    font-size: 25px;
-    margin-bottom: 15px;
-}
-
-/* Main Container */
-.home-container {
-    width: 100vw;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: row;
-    margin: 10px;
-}
-
 /* Schedule & Tasks Container */
 .schedule-tasks-container {
 margin-top: 50px;
@@ -206,7 +146,6 @@ margin-top: 50px;
 
 .task-item h4 {
     font-size: 22px;
-    margin-bottom: 15px;
     color: black;
 }
 
@@ -214,6 +153,7 @@ margin-top: 50px;
     white-space: pre-line;
     font-size: 18px;
     color: black;
+    margin-top: 15px;
 }
 
 .task-info {
@@ -248,54 +188,10 @@ margin-top: 50px;
     color: white;
 }
 
-.modal {
-    display: none; /* כדי שהפופ-אפ לא יוצג בהתחלה */
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.modal-content {
-    background: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    width: 300px;
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
-}
-
-.modal-buttons {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 15px;
-}
-
-.modal-buttons button {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-#confirm-btn {
-    background-color: #4CAF50;
-    color: white;
-}
-
-#cancel-btn {
-    background-color: #f44336;
-    color: white;
-}
-.completed {
+.completed .task-info {
     text-decoration: line-through;
     opacity: 0.7;
-    background-color: #d4edda; /* ירוק בהיר */
+    color: black;
 }
+
+

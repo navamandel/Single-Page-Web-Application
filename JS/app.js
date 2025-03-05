@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // Dynamically load the correct JavaScript file based on the page
             switch (view) {
                 case "home":
-                    window.loadHomePage();
+                    loadHomePage();
                     break;
                 case "tasks":
                     window.loadTasksPage();
@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     window.loadWeeklySchedule();
                     break;
                 case "login":
-                    window.loadLoginPage();
+                    loadLoginPage();
                     break;
                 default:
                     console.error("Unknown page:", view);
@@ -28,9 +28,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
     //navigateTo("login");
+    navigateTo("home");
 
+   
    // Check if the user is logged in
-   if (getCurrentUser()) {
+   /* if (getCurrentUser()) {
       //  navigateTo("home");
         navigateTo("schedule");
 console.log("hiiii");
@@ -41,5 +43,33 @@ console.log("hiiii");
     }  
 
     // Make navigateTo globally accessible
-    window.navigateTo = navigateTo;
+    window.navigateTo = navigateTo; */
 });
+function updatePageTitle(title, description) {
+    document.getElementById("page-title").textContent = title;
+    document.getElementById("page-description").textContent = description;
+} 
+
+
+function showCustomModal(title,message, onConfirm) {
+    const modal = document.getElementById("custom-modal");
+    const modaltitle = document.getElementById("modal-title");
+    const modalMessage = document.getElementById("modal-message");
+    const confirmBtn = document.getElementById("confirm-btn");
+    const cancelBtn = document.getElementById("cancel-btn");
+
+    modaltitle.textContent=title;
+    modalMessage.textContent = message;
+    modal.style.display = "flex";  
+
+    confirmBtn.onclick = function () {
+        modal.style.display = "none";
+        onConfirm();
+    };
+
+    cancelBtn.onclick = function () {
+        modal.style.display = "none";
+    };
+}
+
+
