@@ -28,14 +28,20 @@ const DB_API = {
     },
 
     get: function(file = null) {
-        let currUser = getCookie('LoggedIn');
+        let currUser = sessionStorage.getItem("user");
         if (currUser) {
-            currUser = JSON.parse(localStorage.getItem(currUser));
+            currUser = JSON.parse(currUser);
         }
 
         switch (file) {
             case "users":
-                return JSON.parse(localStorage.getItem("Users"));
+                const users = localStorage.getItem("Users")
+                if (users) {
+                    return users;
+                } else {
+                    localStorage.setItem("Users", "[]");
+                    return "[]";
+                }
             case "meetings":
                 return currUser.meetings;
             case "contacts": 
@@ -102,3 +108,4 @@ const DB_API = {
         localStorage.setItem(user.username, JSON.stringify(user));
     }
 };
+
