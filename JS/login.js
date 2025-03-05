@@ -1,4 +1,9 @@
 function loadLoginPage() {
+    const template = document.getElementById(`login-template`);
+    const content = template.content.cloneNode(true);
+    document.getElementById("app").innerHTML = "";
+    document.getElementById("app").appendChild(content);
+
     const container = document.getElementById("container");
     const registerBtn = document.getElementById("register-btn");
     const loginBtn = document.getElementById("login-btn");
@@ -13,14 +18,10 @@ function loadLoginPage() {
     });
 }
 
-function handleFormSubmission(){
+function handleFormSubmission(action){
         
-    // Handle form submission
-    document.getElementById("app").addEventListener("submit", (event) => {
-        event.preventDefault();
-        const form = event.target;
-
-        if (form.id === "login-form") {
+    // Handle form submissio
+        if (action === "Log In") {
             const username = document.getElementById("username").value.trim();
             const password = document.getElementById("pw").value.trim();
 
@@ -29,7 +30,7 @@ function handleFormSubmission(){
              loadHomePage();
             } 
 
-        } else if (form.id === "register-form") {
+        } else if (action === "Sign up") {
             const username = document.getElementById("newusername").value.trim();
             const password = document.getElementById("newpw").value.trim();
             const confirmPassword = document.getElementById("confirmpw").value.trim();
@@ -48,5 +49,4 @@ function handleFormSubmission(){
                 loadHomePage();
             }
         }
-    });
  }

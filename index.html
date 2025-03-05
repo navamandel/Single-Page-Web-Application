@@ -18,7 +18,8 @@
     <template id="sidebar-template">
         <nav class="sidebar">
             <ul class="menu">
-                <li onclick="loadHomePage();">LOGO</li>
+                <li></li>
+                <li onclick="loadHomePage();"><img src="./images/PLANIT.png"></li>
                 <li onclick="loadHomePage();">Home</li>
                 <li onclick="loadWeeklySchedule();">Weekly Schedule</li>
                 <li onclick="loadTasksPage();">Tasks</li>
@@ -52,13 +53,14 @@
 
     <!-- Login Page Template -->
     <template id="login-template">
+        <img id="logo" src="./images/PLANITlogo.png">
         <div class="container" id="container">
             <div class="form-container sign-in">
                 <form id="login-form">
                     <h1>Sign In</h1>
                     <input type="text" id="username" placeholder="Username">
                     <input type="password" id="pw" placeholder="Password">
-                    <button type="submit" onclick="handleFormSubmission()">Log In</button>
+                    <button  onclick="handleFormSubmission('Log In')">Log In</button>
                 </form>
             </div>
             <div class="form-container sign-up">
@@ -69,7 +71,7 @@
                     <input type="text" id="newusername" placeholder="Username">
                     <input type="password" id="newpw" placeholder="Password">
                     <input type="password" id="confirmpw" placeholder="Confirm Password">
-                    <button type="submit" onclick="handleFormSubmission()">Sign Up</button>
+                    <button  onclick="handleFormSubmission('Sign Up')">Sign Up</button>
                 </form>
             </div>
             <div class="toggle-container">

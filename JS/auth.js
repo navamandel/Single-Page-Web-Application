@@ -1,43 +1,17 @@
 
-// פונקציה ראשית לניהול משתמשים
 
-// פונקציה לניהול חיבור המשתמש (Session)
+// Manage user session
 function handleSession(action, user = null) {
-    switch (action) {
-        case "set":
-            sessionStorage.setItem("currentUser", JSON.stringify(user));
-            break;
-        case "get":
-            return JSON.parse(sessionStorage.getItem("currentUser"));
-        case "remove":
-            sessionStorage.removeItem("currentUser");
-            break;
-        default:
-            console.error("פעולה לא מזוהה ב-handleSession");
-    }
+    return handleStorage("session", action, "currentUser", user);
 }
 
+// Retrieve the current logged-in user
 function getCurrentUser() {
     return handleSession("get");
 }
- 
-function handleSession(action, user = null) {
-    switch (action) {
-        case "set":
-            sessionStorage.setItem("currentUser", JSON.stringify(user));
-            break;
-        case "get":
-            return JSON.parse(sessionStorage.getItem("currentUser"));
-        case "remove":
-            sessionStorage.removeItem("currentUser");
-            break;
-        default:
-            console.error("פעולה לא מזוהה ב-handleSession");
-    }
-}
+
+// User management (register, login, logout, retrieve user)
 function manageUsers(action, data) {
-    console.log(data);
-    
     switch (action) {
         case "register":
             return registerUser(data);
@@ -48,25 +22,25 @@ function manageUsers(action, data) {
         case "getCurrentUser":
             return getCurrentUser();
         default:
-            console.error("פעולה לא מזוהה ב-manageUsers");
+            console.error("Unknown action in manageUsers");
             return null;
     }
 }
 
-// קבלת רשימת משתמשים
+// Retrieve all users from localStorage
 function getUsers() {
-    return JSON.parse(localStorage.getItem("users")) || [];
+    return handleStorage("local", "get", "users") || [];
 }
 
-// שמירת משתמשים ל-LocalStorage
+// Save users to localStorage
 function saveUsers(users) {
-    localStorage.setItem("users", JSON.stringify(users));
+    handleStorage("local", "set", "users", users);
 }
 
-// אימות כניסת משתמש
+// Authenticate user login
 function authenticateUser({ username, password }) {
     if (!username || !password) {
-        alert("יש למלא שם משתמש וסיסמה!");
+        alert("Username and password are required!");
         return false;
     }
 
@@ -78,42 +52,33 @@ function authenticateUser({ username, password }) {
         return true;
     }
 
-    alert("שם משתמש או סיסמה שגויים!");
+    alert("Invalid username or password!");
     return false;
 }
 
-// הרשמת משתמש חדש
+// Register a new user
 function registerUser({ username, password }) {
-    console.log(username,password);
-    
     if (!username || !password) {
-        alert("יש למלא את כל השדות!");
+        alert("All fields are required!");
         return false;
     }
 
     const users = getUsers();
-
     if (users.some(user => user.username === username)) {
-        alert("שם משתמש זה כבר קיים! בחר שם אחר.");
+        alert("Username already exists! Choose a different one.");
         return false;
     }
 
     users.push({ username, password });
     saveUsers(users);
-    alert("ההרשמה הצליחה! כעת ניתן להתחבר.");
+    alert("Registration successful! You can now log in.");
     return true;
 }
 
-// קבלת המשתמש המחובר הנוכחי
-function getCurrentUser() {
-    return handleSession("get");
-}
-
-// יציאת משתמש
+// Logout user
 function logoutUser() {
     handleSession("remove");
-    alert("התנתקת בהצלחה!");
+    alert("You have successfully logged out!");
     return true;
 }
-
 

@@ -10,12 +10,13 @@
 
 body {
     background-color: #c9d6ff;
-    background: linear-gradient(to right, #e2e2e2, #c9d6ff);
+    background: #FEFBF3;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
 }
+
 
 
 /* Sidebar Navigation */
@@ -59,7 +60,6 @@ body {
     background: #FEFBF3;
     padding: 20px;
     margin-left: 40px;
-    margin-top: 80px;
     border-radius: 12px;
     text-align: left;
     font-size: 20px;
@@ -290,4 +290,13 @@ body {
 
 .container.active .toggle-right {
     transform: translateX(200%);
+}
+img{
+    width: 100%;
+}
+#logo{
+    display: block; 
+    margin: 0 auto; 
+    text-align: center;
+    width: 50%;
 }

@@ -27,8 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
     }
-    //navigateTo("login");
-    navigateTo("home");
+    navigateTo("login");
+    //navigateTo("home");
 
    
    // Check if the user is logged in
@@ -45,6 +45,25 @@ console.log("hiiii");
     // Make navigateTo globally accessible
     window.navigateTo = navigateTo; */
 });
+
+// Generic function to handle localStorage and sessionStorage
+function handleStorage(type, action, key, value = null) {
+    const storage = type === "session" ? sessionStorage : localStorage;
+    switch (action) {
+        case "set":
+            storage.setItem(key, JSON.stringify(value));
+            break;
+        case "get":
+            return JSON.parse(storage.getItem(key));
+        case "remove":
+            storage.removeItem(key);
+            break;
+        default:
+            console.error(`Unknown action in handleStorage: ${action}`);
+            return null;
+    }
+}
+
 function updatePageTitle(title, description) {
     document.getElementById("page-title").textContent = title;
     document.getElementById("page-description").textContent = description;
