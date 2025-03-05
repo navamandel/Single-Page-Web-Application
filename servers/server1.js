@@ -22,23 +22,18 @@ const server1 = {
 
     GET: function(data) {
         const users = DB_API.get("users");
-        const usernames = Object.keys(users);
-        if (usernames.find(usr => usr === data)) {
-            return {"status": this.status_codes["SUCCESS"], "response": users[data]};
+        if (users) {
+            return {"status": this.status_codes["SUCCESS"], "response": users};
         } else {
             return {"status": this.status_codes["ERROR_NOT_FOUND"], "response": "ERROR_NOT_FOUND"};
         }
     },
 
     POST: function(data) {
-        const users = DB_API.get("users");
-        const usernames = Object.keys(users);
-        if (usernames.find(usr => usr === data.username)) {
-            return {"status": this.status_codes["ERROR_DATA_EXISTS"], "response": "ERROR_DATA_EXISTS"};
-        } else {
-            DB_API.add("users", data);
-            return {"status": this.status_codes["SUCCESS"], "response": "SUCCESS"};
-        }
+        
+        DB_API.add("users", data);
+        return {"status": this.status_codes["SUCCESS"], "response": "SUCCESS"};
+        
     },
 
     PUT: function(data) {
