@@ -5,9 +5,11 @@ const DB_API = {
         switch (file) {
             case "users":
                 const users = this.get(file);
-                users[data.username] = data.password;
+                console.log(file);
+                console.log(users);
+                users.push(data);
                 localStorage.setItem("Users", JSON.stringify(users));
-                localStorage.setItem(data.username, JSON.stringify(data));
+                //localStorage.setItem(data.username, JSON.stringify(data));
                 break;
             case "meetings":
                 index = user.meetings.findIndex(mtg => mtg.date > data.date);
@@ -35,13 +37,17 @@ const DB_API = {
 
         switch (file) {
             case "users":
+                console.log("It's in db");
                 const users = localStorage.getItem("Users")
+                console.log(users);
                 if (users) {
-                    return users;
+                    return JSON.parse(users);
                 } else {
+                    console.log("it should go in here");
                     localStorage.setItem("Users", "[]");
-                    return "[]";
+                    return [];
                 }
+                break;
             case "meetings":
                 return currUser.meetings;
             case "contacts": 

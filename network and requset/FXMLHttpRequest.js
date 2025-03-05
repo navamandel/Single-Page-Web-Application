@@ -49,6 +49,7 @@ class FXMLHttpRequest {
                 this.status_ = serverResponse["status"];
                 this.response_ = JSON.stringify(serverResponse["response"]);
 
+                console.log("it's in fajax");
                 this.readyState_ = 4;
                 this.changeReadyStates("readystatechange");
             }

@@ -46,9 +46,30 @@ console.log("hiiii");
     window.navigateTo = navigateTo; */
 });
 
+//file : "users", "courses", "tasks"
+//methods: "GET", "POST"-> add, "PUT" -> update, "DELETE"
+function fajax(method, file, data = null) {
+    let response_;
+    const fxhr = new FXMLHttpRequest();
+    fxhr.open(method, file);
+    fxhr.send(data);
+    
+    fxhr.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200){
+            response_ = this.response;
+        } else if (this.readyState === 4 && this.status === 404) {
+            return "ERROR not Found"
+        }
+    };
+
+    return response_;
+}
+
+
+console.log(response_);
 // Generic function to handle localStorage and sessionStorage
 function handleStorage(type, action, key, value = null) {
-    const storage = type === "session" ? sessionStorage : localStorage;
+    /*const storage = type === "session" ? sessionStorage : localStorage;
     switch (action) {
         case "set":
             storage.setItem(key, JSON.stringify(value));
@@ -61,7 +82,9 @@ function handleStorage(type, action, key, value = null) {
         default:
             console.error(`Unknown action in handleStorage: ${action}`);
             return null;
-    }
+    }*/
+
+    
 }
 
 function updatePageTitle(title, description) {

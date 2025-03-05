@@ -23,6 +23,7 @@ const server1 = {
     GET: function(data) {
         const users = DB_API.get("users");
         if (users) {
+            console.log("it's in server");
             return {"status": this.status_codes["SUCCESS"], "response": users};
         } else {
             return {"status": this.status_codes["ERROR_NOT_FOUND"], "response": "ERROR_NOT_FOUND"};
