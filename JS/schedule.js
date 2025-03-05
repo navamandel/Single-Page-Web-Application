@@ -7,6 +7,8 @@ function loadWeeklySchedule() {
     document.getElementById("sidebar-container").innerHTML = document.getElementById("sidebar-template").innerHTML;
     document.getElementById("header-container").innerHTML = document.getElementById("header-template").innerHTML;
     document.getElementById("modal-container").innerHTML = document.getElementById("modal-template").innerHTML;
+    updatePageTitle(`Weekly Schedule`, "Here is an overview of your weekly schedule.");
+
     const modal = document.getElementById("custom-modal");
     modal.style.display="none"
     
@@ -78,7 +80,7 @@ function displaySchedule(daysOfWeek){
     weeklyGrid.appendChild(emptyHeader);
     daysOfWeek.forEach(day => {
         let dayHeader = document.createElement("div");
-        dayHeader.classList.add("time-slot");
+        dayHeader.classList.add("time-slot-day");
         dayHeader.style.fontWeight = "bold";
         dayHeader.textContent = day;
         weeklyGrid.appendChild(dayHeader);

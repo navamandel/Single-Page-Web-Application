@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="./CSS/style.css">
     <link rel="stylesheet" href="./CSS/home.css">
     <link rel="stylesheet" href="./CSS/schedule.css">
+    <link rel="stylesheet" href="./CSS/tasks.css">
     <title>Student Planner</title>
 </head>
 <body>
@@ -114,7 +115,9 @@
             <div id="sidebar-container"></div>
             <div class="main-content">
                 <div id="header-container"></div>
-                <button id="add-course-btn" onclick="openCourseModal()">➕ Add Course</button>
+                <div class="schedule-header">
+                    <button class="add-course-btn">➕ Add Course</button>
+                </div>
                 <div class="weekly-grid" id="weekly-grid"></div>
             </div>
         </div>
@@ -153,6 +156,11 @@
     <script src="./JS/schedule.js"></script>
     <script src="./JS/tasks.js"></script>
     <script src="./JS/app.js"></script>
+    <script src="./data/DBAPI.js"></script>
+    <script src="./servers/server1.js"></script>
+    <script src="./servers/server2.js"></script>
+    <script src="./network%20and%20requset/network.js"></script>
+    <script src="./network%20and%20requset/FXMLHttpRequest.js"></script>
 
     
 </body>

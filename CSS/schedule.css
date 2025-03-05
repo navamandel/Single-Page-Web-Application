@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+
 .weekly-schedule-container {
     flex: 1;
     background: white;
@@ -15,6 +17,20 @@
     gap: 5px;
     align-items: start;
     position: relative;
+    background-color: white;
+}
+
+.time-slot-day {
+    font-weight: bold;
+    text-align: center;
+    background: #EF9587;
+    padding: 10px;
+    border-radius: 5px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
 }
 
 
@@ -66,4 +82,25 @@
 
 .course-buttons button:hover {
     background: #eee;
+}
+.schedule-header {
+    display: flex;
+    justify-content: flex-end; /* דוחף את הכפתור לצד ימין */
+    padding: 10px;
+    margin-bottom: 10px; /* מרווח לפני לוח הזמנים */
+}
+
+.add-course-btn {
+    padding: 10px 10px;
+    font-size: 25px;
+    background-color: #492799; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+.add-course-btn:hover {
+    background-color: #530b9a; /* צבע כהה יותר בלחיצה */
 }
