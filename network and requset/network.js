@@ -3,7 +3,6 @@ class Network{
     send(method, file, destination, data = null) {
         if (destination === "server1") {
             
-            console.log("It's in the network")
             return server1.processRequest(method, data);
             
         }

@@ -1,9 +1,9 @@
 const server2 = {
     status_codes: {
-        "ERROR_NOT_FOUND": 404,
-        "ERROR_USER_DATA": 401,
-        "ERROR_DATA_EXISTS": 402,
-        "SUCCESS": 200
+        404: "ERROR_NOT_FOUND",
+        401: "ERROR_USER_DATA",
+        402: "ERROR_DATA_EXISTS",
+        200: "SUCCESS"
     },
 
     processRequest: function(method, file, data) {
@@ -22,24 +22,34 @@ const server2 = {
         let dataToReturn = DB_API.get(file);
 
         if (dataToReturn) {
-            return {"status": this.status_codes["SUCCESS"], "response": dataToReturn};
+            return {"status": 200, 
+                    "status_text": this.status_codes[200], 
+                    "response": dataToReturn};
         } else {
-            return {"status": this.status_codes["ERROR_NOT_FOUND"], "response": "ERROR_NOT_FOUND"}
-        }
+            return {"status": 404, 
+                    "status_text": this.status_codes[404],
+                    "response": this.status_codes[404]};
+    }
     },
 
     POST: function(file, data) {
-        DB_API.add(file, data)
-        return {"status": this.status_codes["SUCCESS"], "response": "SUCCESS"}; 
+        let status = DB_API.add(file, data);
+        return {"status": status, 
+                "status_text": this.status_codes[status], 
+                "response": this.status_codes[status]};
     },
 
     PUT: function(file, data) {
-        DB_API.update(file, data)
-        return {"status": this.status_codes["SUCCESS"], "response": "SUCCESS"};
+        let status = DB_API.update(file, data);
+        return {"status": status, 
+                "status_text": this.status_codes[status], 
+                "response": this.status_codes[status]};
     },
 
     DELETE: function(file, data = null) {
-        DB_API.delete(file, data)
-        return {"status": this.status_codes["SUCCESS"], "response": "SUCCESS"};
+        let status = DB_API.delete(file, data)
+        return {"status": status, 
+                "status_text": this.status_codes[status], 
+                "response": this.status_codes[status]};
     }
 };

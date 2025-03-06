@@ -2,6 +2,7 @@ class FXMLHttpRequest {
 
     constructor() {
         this.status_ = 100;
+        this.status_text_ = "REQUEST_NOT_READY";
         this.readyState_ = 0;
         this.response_ = null;
         this.onreadystatechange = null;
@@ -9,6 +10,10 @@ class FXMLHttpRequest {
 
     get status() {
         return this.status_;
+    }
+
+    get status_text() {
+        return this.status_text_;
     }
 
     get readyState() {
@@ -47,9 +52,9 @@ class FXMLHttpRequest {
             
             if (serverResponse) {
                 this.status_ = serverResponse["status"];
-                this.response_ = JSON.stringify(serverResponse["response"]);
+                this.status_text_ = serverResponse["status_text"];
+                this.response_ = serverResponse["response"];
 
-                console.log("it's in fajax");
                 this.readyState_ = 4;
                 this.changeReadyStates("readystatechange");
             }

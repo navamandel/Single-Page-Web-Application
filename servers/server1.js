@@ -1,9 +1,9 @@
 const server1 = {
     status_codes: {
-        "ERROR_NOT_FOUND": 404,
-        "ERROR_USER_DATA": 401,
-        "ERROR_DATA_EXISTS": 402,
-        "SUCCESS": 200
+        404: "ERROR_NOT_FOUND",
+        401: "ERROR_USER_DATA",
+        402: "ERROR_DATA_EXISTS",
+        200: "SUCCESS"
     },
 
     processRequest: function(method, data) {
@@ -23,32 +23,43 @@ const server1 = {
     GET: function(data) {
         const users = DB_API.get("users");
         if (users) {
-            console.log("it's in server");
-            return {"status": this.status_codes["SUCCESS"], "response": users};
+            return {"status": 200, 
+                    "status_text": this.status_codes[200], 
+                    "response": users};
         } else {
-            return {"status": this.status_codes["ERROR_NOT_FOUND"], "response": "ERROR_NOT_FOUND"};
+            return {"status": 404, 
+                    "status_text": this.status_codes[404],
+                    "response": this.status_codes[404]};
         }
     },
 
     POST: function(data) {
-        
-        DB_API.add("users", data);
-        return {"status": this.status_codes["SUCCESS"], "response": "SUCCESS"};
+        let status = DB_API.add("users", data);
+        return {"status": status, 
+                "status_text": this.status_codes[status], 
+                "response": this.status_codes[status]};
         
     },
 
     PUT: function(data) {
-        const users = DB_API.get("users");
+        /*const users = DB_API.get("users");
         if (data.updated.username && users.find(usr => usr === data.updated.username)) {
             return {"status": this.status_codes["ERROR_DATA_EXISTS"], "response": "ERROR_DATA_EXISTS"}; 
         } else {
             DB_API.update("users", data);
             return {"status": this.status_codes["SUCCESS"], "response": "SUCCESS"};
-        }
+        }*/
+
+       let status = DB_API.update("users", data);
+       return {"status": status, 
+               "status_text": this.status_codes[status], 
+               "response": this.status_codes[status]};
     },
 
     DELETE: function(data) {
-        DB_API.delete("users", data);
-        return {"status": this.status_codes["SUCCESS"], "response": "SUCCESS"};
+        let status = DB_API.delete("users", data);
+        return {"status": status, 
+                "status_text": this.status_codes[status], 
+                "response": this.status_codes[status]};
     }
 };
