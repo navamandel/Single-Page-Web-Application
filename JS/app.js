@@ -1,50 +1,30 @@
 
 document.addEventListener("DOMContentLoaded", () => {
-    function navigateTo(view) {
-        const template = document.getElementById(`${view}-template`);
-        if (template) {
-            const content = template.content.cloneNode(true);
-            document.getElementById("app").innerHTML = "";
-            document.getElementById("app").appendChild(content);
-            console.log("hii");
-
-            // Dynamically load the correct JavaScript file based on the page
-            switch (view) {
-                case "home":
-                    loadHomePage();
-                    break;
-                case "tasks":
-                    window.loadTasksPage();
-                    break;
-                case "schedule":
-                    window.loadWeeklySchedule();
-                    break;
-                case "login":
-                    loadLoginPage();
-                    break;
-                default:
-                    console.error("Unknown page:", view);
-            }
-        }
-    }
-    navigateTo("login");
-    //navigateTo("home");
-
-   
-   // Check if the user is logged in
-   /* if (getCurrentUser()) {
-      //  navigateTo("home");
-        navigateTo("schedule");
-console.log("hiiii");
-
-
-    } else {
-        navigateTo("login");
-    }  
-
-    // Make navigateTo globally accessible
-    window.navigateTo = navigateTo; */
+    initializePage("login");
 });
+
+
+/**
+ * Initializes the page by loading the given template and setting up UI components
+ * @param {string} templateId - The ID of the template to load
+ */
+function initializePage(templateId) {
+    const template = document.getElementById(templateId);
+    const content = template.content.cloneNode(true);
+
+    // Clear existing content and append the new page content
+    document.getElementById("app").innerHTML = "";
+    document.getElementById("app").appendChild(content);
+
+    // Load common UI components
+    document.getElementById("sidebar-container").innerHTML = document.getElementById("sidebar-template").innerHTML;
+    document.getElementById("header-container").innerHTML = document.getElementById("header-template").innerHTML;
+    document.getElementById("modal-container").innerHTML = document.getElementById("modal-template").innerHTML;
+
+    // Ensure modals are hidden by default
+    document.getElementById("custom-modal").style.display = "none";
+}
+
 
 //file : "users", "courses", "tasks"
 //methods: "GET", "POST"-> add, "PUT" -> update, "DELETE"
@@ -66,31 +46,23 @@ function fajax(method, file, data = null) {
 }
 
 
-console.log(response_);
-// Generic function to handle localStorage and sessionStorage
-function handleStorage(type, action, key, value = null) {
-    /*const storage = type === "session" ? sessionStorage : localStorage;
-    switch (action) {
-        case "set":
-            storage.setItem(key, JSON.stringify(value));
-            break;
-        case "get":
-            return JSON.parse(storage.getItem(key));
-        case "remove":
-            storage.removeItem(key);
-            break;
-        default:
-            console.error(`Unknown action in handleStorage: ${action}`);
-            return null;
-    }*/
-
-    
-}
-
 function updatePageTitle(title, description) {
     document.getElementById("page-title").textContent = title;
     document.getElementById("page-description").textContent = description;
 } 
+
+/**
+ * Displays a no Items Message inside the given container
+ * @param {HTMLElement} container - The container where the message should be displayed
+ * @param {string} message - The message to display
+ */
+function noItemsMessage(container, message) {
+    container.innerHTML = ""; // Clear previous content
+    const messageElement = document.createElement("p");
+    messageElement.textContent = message;
+    messageElement.classList.add("empty-state-message");
+    container.appendChild(messageElement);
+}
 
 
 function showCustomModal(title,message, onConfirm) {

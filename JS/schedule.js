@@ -1,83 +1,91 @@
+/**
+ * Loads the weekly schedule page and initializes content.
+ */
 function loadWeeklySchedule() {
-    const template = document.getElementById(`schedule-template`);
-    const content = template.content.cloneNode(true);
-    document.getElementById("app").innerHTML = "";
-    document.getElementById("app").appendChild(content);
+    initializePage("schedule") 
 
-    document.getElementById("sidebar-container").innerHTML = document.getElementById("sidebar-template").innerHTML;
-    document.getElementById("header-container").innerHTML = document.getElementById("header-template").innerHTML;
-    document.getElementById("modal-container").innerHTML = document.getElementById("modal-template").innerHTML;
     updatePageTitle(`Weekly Schedule`, "Here is an overview of your weekly schedule.");
 
-    const modal = document.getElementById("custom-modal");
-    modal.style.display="none"
-    
-    //SERVER-CHANGE
-    let courses = JSON.parse(localStorage.getItem("weeklySchedule")) || [];
-    let daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-   
-    //setWeeklySampleData();
-    displaySchedule(daysOfWeek);
-    displayCourses(courses,daysOfWeek);
 
+    // Fetch courses from storage
+    let courses = fajax("GET", "courses") || [];
+    let daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+    // Check if there are no courses
+    if (courses.length === 0) {
+        noItemsMessage(document.getElementById("weekly-grid"), "No courses scheduled for this week.");
+    } 
+
+    displaySchedule(daysOfWeek);
+    displayCourses(courses, daysOfWeek);
 }
 
-function displayCourses(courses,daysOfWeek){
+/**
+ * Displays courses in the weekly schedule.
+ */
+function displayCourses(courses, daysOfWeek) {
     let sortedCourses = {};
+    
+    // Group courses by day
     daysOfWeek.forEach(day => sortedCourses[day] = []);
     courses.forEach(course => sortedCourses[course.day].push(course));
 
+    // Iterate through each day and display courses
     daysOfWeek.forEach(day => {
-        sortedCourses[day].forEach((course, index) => {
+        sortedCourses[day].forEach(course => {
             let courseSlot = document.querySelector(`.course-container[data-day='${day}'][data-time='${course.start}']`);
             if (courseSlot) {
                 let courseBlock = document.createElement("div");
                 courseBlock.classList.add("course-block-week");
                 courseBlock.style.height = `${calculateDuration(course.start, course.end) * 50}px`;
+
+                // Course details
                 let courseContent = document.createElement("div");
-            courseContent.classList.add("course-content");
-            courseContent.innerHTML = `
-                <strong>${course.name}</strong> 
-                <br> 
-                (${course.start} - ${course.end})
-            `;
+                courseContent.classList.add("course-content");
+                courseContent.innerHTML = `<strong>${course.name}</strong><br> (${course.start} - ${course.end})`;
 
-            let buttonContainer = document.createElement("div");
-            buttonContainer.classList.add("course-buttons");
+                // Action buttons (edit & delete)
+                let buttonContainer = document.createElement("div");
+                buttonContainer.classList.add("course-buttons");
 
-            let editBtn = document.createElement("button");
-            editBtn.innerHTML = "✏️";
-            editBtn.classList.add("edit-course");
-            editBtn.onclick = () => openCourseModal(course, index);
+                let editBtn = document.createElement("button");
+                editBtn.innerHTML = "✏️";
+                editBtn.classList.add("edit-course");
+                editBtn.onclick = () => openCourseModal(course);
 
-            let deleteBtn = document.createElement("button");
-            deleteBtn.innerHTML = "❌";
-            deleteBtn.classList.add("delete-course");
-            deleteBtn.onclick = () => openDeleteModal(course, index);
+                let deleteBtn = document.createElement("button");
+                deleteBtn.innerHTML = "❌";
+                deleteBtn.classList.add("delete-course");
+                deleteBtn.onclick = () => openDeleteModal(course);
 
-            buttonContainer.appendChild(editBtn);
-            buttonContainer.appendChild(deleteBtn);
+                buttonContainer.appendChild(editBtn);
+                buttonContainer.appendChild(deleteBtn);
 
-            courseBlock.appendChild(courseContent);
-            courseBlock.appendChild(buttonContainer);
-
+                courseBlock.appendChild(courseContent);
+                courseBlock.appendChild(buttonContainer);
                 courseSlot.appendChild(courseBlock);
             }
         });
     });
 }
 
-function displaySchedule(daysOfWeek){
+/**
+ * Displays the weekly schedule layout.
+ */
+function displaySchedule(daysOfWeek) {
     const weeklyGrid = document.getElementById("weekly-grid");
-    weeklyGrid.innerHTML = ""; 
+    weeklyGrid.innerHTML = "";
     let timeSlots = [];
+
+    // Generate hourly time slots
     for (let hour = 8; hour <= 18; hour++) {
-        let timeLabel = hour.toString().padStart(2, "0") + ":00";
-        timeSlots.push(timeLabel);
+        timeSlots.push(`${hour.toString().padStart(2, "0")}:00`);
     }
 
+    // Create day headers
     let emptyHeader = document.createElement("div");
     weeklyGrid.appendChild(emptyHeader);
+
     daysOfWeek.forEach(day => {
         let dayHeader = document.createElement("div");
         dayHeader.classList.add("time-slot-day");
@@ -86,6 +94,7 @@ function displaySchedule(daysOfWeek){
         weeklyGrid.appendChild(dayHeader);
     });
 
+    // Create grid cells for each time slot and day
     timeSlots.forEach(time => {
         let timeDiv = document.createElement("div");
         timeDiv.classList.add("time-slot");
@@ -100,47 +109,40 @@ function displaySchedule(daysOfWeek){
             weeklyGrid.appendChild(courseContainer);
         });
     });
-
 }
 
-
+/**
+ * Calculates the duration of a course in hours.
+ */
 function calculateDuration(start, end) {
     let [startHour, startMin] = start.split(":").map(Number);
     let [endHour, endMin] = end.split(":").map(Number);
     return (endHour + endMin / 60) - (startHour + startMin / 60);
 }
 
-
+/**
+ * Opens a delete confirmation modal for a specific course.
+ */
 function openDeleteModal(course) {
-    
-    let courses = JSON.parse(localStorage.getItem("weeklySchedule")) || [];
-    const index = courses.findIndex(c => 
-        c.name === course.name && 
-        c.day === course.day && 
-        c.start === course.start && 
-        c.end === course.end
-    );
-    console.log(index);
-
     showCustomModal(
-        'Delete',
-        `Are you sure you want to delete "${course.name}" permanently?`, 
+        'Delete Course',
+        `Are you sure you want to delete "${course.name}" permanently?`,
         function () {
-            courses.splice(index, 1);
-            localStorage.setItem("weeklySchedule", JSON.stringify(courses));
+            fajax("DELETE", "courses",course);
             loadWeeklySchedule();
         }
     );
 }
 
+/**
+ * Opens a modal to edit an existing course or add a new one.
+ */
 function openCourseModal(course = null, index = null) {
     const modal = document.getElementById("custom-modal");
     const modalMessage = document.getElementById("modal-message");
     const modalTitle = document.getElementById("modal-title");
     const confirmBtn = document.getElementById("confirm-btn");
     const cancelBtn = document.getElementById("cancel-btn");
-
-    console.log("im in openCourseModal");
     
     const isEditMode = course !== null;
 
@@ -163,7 +165,7 @@ function openCourseModal(course = null, index = null) {
     `;
 
     confirmBtn.onclick = function () {
-        saveCourse(isEditMode, index);
+        saveCourse(isEditMode, course.id);
     };
     cancelBtn.onclick = function () {
         modal.style.display = "none";
@@ -171,57 +173,41 @@ function openCourseModal(course = null, index = null) {
 
     modal.style.display = "flex";  
 }
+
+/**
+ * Generates dropdown options for course days.
+ */
 function generateDayOptions(selectedDay = "Monday") {
     const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
     return days.map(day => `<option value="${day}" ${day === selectedDay ? "selected" : ""}>${day}</option>`).join("");
 }
 
-
-function saveCourse(isEditMode, index) {
-    let courses = JSON.parse(localStorage.getItem("weeklySchedule")) || [];
-
-    const updatedCourse = {
+/**
+ * Saves a course (either updating an existing one or adding a new one).
+ */
+function saveCourse(isEditMode, courseId) {
+    let courseData = {
+        id: isEditMode ? courseId: "",
         name: document.getElementById("course-name").value.trim(),
         day: document.getElementById("course-day").value,
         start: document.getElementById("course-start").value,
         end: document.getElementById("course-end").value
     };
-    console.log(updatedCourse);
-    console.log(isEditMode);
 
-    
-
-    if (!updatedCourse.name || !updatedCourse.start || !updatedCourse.end) {
+    // Validate required fields
+    if (!courseData.name || !courseData.start || !courseData.end) {
         alert("Please fill all fields!");
         return;
     }
 
+    // Perform API call based on action type
     if (isEditMode) {
-        courses.splice(index, 1);        
+        courseData.id = courseId;
+        fajax("PUT", "courses", courseData);
+    } else {
+        fajax("POST", "courses", courseData);
     }
-
-    courses.push(updatedCourse); 
-
-
-    localStorage.setItem("weeklySchedule", JSON.stringify(courses));
 
     document.getElementById("custom-modal").style.display = "none";
     loadWeeklySchedule();
-}
-
-function setWeeklySampleData() {
-    const sampleSchedule = [
-        { name: "Mathematics", day: "Monday", start: "08:00", end: "10:00" },
-        { name: "Physics", day: "Monday", start: "12:00", end: "14:00" },
-        { name: "Computer Science", day: "Tuesday", start: "09:00", end: "11:00" },
-        { name: "Software Engineering", day: "Tuesday", start: "15:00", end: "16:30" },
-        { name: "Statistics", day: "Wednesday", start: "10:00", end: "12:00" },
-        { name: "Machine Learning", day: "Wednesday", start: "13:00", end: "14:30" },
-        { name: "AI Ethics", day: "Thursday", start: "08:30", end: "10:30" },
-        { name: "Cyber Security", day: "Thursday", start: "14:00", end: "15:30" },
-        { name: "Data Structures", day: "Friday", start: "10:00", end: "12:00" }
-    ];
-
-    localStorage.setItem("weeklySchedule", JSON.stringify(sampleSchedule));
-    console.log("Sample weekly schedule data has been saved to localStorage.");
 }

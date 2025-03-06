@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
 
+/* Weekly Schedule Container */
 .weekly-schedule-container {
     flex: 1;
     background: white;
@@ -8,18 +9,20 @@
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
-    overflow-x: auto;
+    overflow-x: auto; /* Enables horizontal scrolling if needed */
 }
 
+/* Weekly Schedule Grid */
 .weekly-grid {
     display: grid;
-    grid-template-columns: 100px repeat(7, 1fr); /* עמודה לשעות + 7 ימים */
+    grid-template-columns: 100px repeat(7, 1fr); /* First column for time slots, 7 columns for days */
     gap: 5px;
     align-items: start;
     position: relative;
     background-color: white;
 }
 
+/* Day Header Styling */
 .time-slot-day {
     font-weight: bold;
     text-align: center;
@@ -33,11 +36,14 @@
     color: black;
 }
 
-
+/* Course Container */
 .course-container {
     position: relative;
     height: 50px;
-}.course-block-week {
+}
+
+/* Course Block Styling */
+.course-block-week {
     position: relative;
     background: #492799;
     color: white;
@@ -52,22 +58,22 @@
     justify-content: space-between;
 }
 
-/* קונטיינר שמכיל את שם הקורס והשעות */
+/* Course Content (Name + Time) */
 .course-content {
     margin-bottom: 10px;
 }
 
-/* סידור הכפתורים */
+/* Course Action Buttons */
 .course-buttons {
     position: absolute;
     top: 5px;
     right: 5px;
     display: flex;
     gap: 5px;
-    z-index: 10; /* מבטיח שהכפתורים יהיו מעל כל שאר האלמנטים */
+    z-index: 10; /* Ensures buttons appear above other elements */
 }
 
-/* עיצוב כפתורים */
+/* Button Styling */
 .course-buttons button {
     background: white;
     border: none;
@@ -83,13 +89,16 @@
 .course-buttons button:hover {
     background: #eee;
 }
+
+/* Schedule Header (Add Course Button Container) */
 .schedule-header {
     display: flex;
-    justify-content: flex-end; /* דוחף את הכפתור לצד ימין */
+    justify-content: flex-end; /* Aligns button to the right */
     padding: 10px;
-    margin-bottom: 10px; /* מרווח לפני לוח הזמנים */
+    margin-bottom: 10px; /* Adds spacing before the schedule grid */
 }
 
+/* Add Course Button */
 .add-course-btn {
     padding: 10px 10px;
     font-size: 25px;
@@ -102,5 +111,5 @@
 }
 
 .add-course-btn:hover {
-    background-color: #530b9a; /* צבע כהה יותר בלחיצה */
+    background-color: #530b9a; /* Darker shade on hover */
 }

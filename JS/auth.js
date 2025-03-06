@@ -1,16 +1,21 @@
-
-
-// Manage user session
-function handleSession(action, user = null) {
-    return handleStorage("session", action, "currentUser", user);
-}
-
 // Retrieve the current logged-in user
 function getCurrentUser() {
-    return handleSession("get");
+    return fajax("GET", "currentUser") || null;
 }
 
-// User management (register, login, logout, retrieve user)
+// Constructor function for a new user
+function User(firstname, lastname, username, password) {
+    return {
+        firstname: firstname,
+        lastname: lastname,
+        username: username,
+        password: password,
+        courses: [],
+        tasks: [],
+    };
+}
+
+// Manage user actions (register, login, logout, retrieve user)
 function manageUsers(action, data) {
     switch (action) {
         case "register":
@@ -27,14 +32,14 @@ function manageUsers(action, data) {
     }
 }
 
-// Retrieve all users from localStorage
+// Retrieve all users
 function getUsers() {
-    return handleStorage("local", "get", "users") || [];
+    return fajax("GET", "users") || [];
 }
 
-// Save users to localStorage
-function saveUsers(users) {
-    handleStorage("local", "set", "users", users);
+// Save a new user (used in registration)
+function saveUser(user) {
+    fajax("POST", "users", user);
 }
 
 // Authenticate user login
@@ -48,7 +53,7 @@ function authenticateUser({ username, password }) {
     const user = users.find(user => user.username === username && user.password === password);
 
     if (user) {
-        handleSession("set", user);
+        fajax("PUT", "currentUser", user); // Save current session user
         return true;
     }
 
@@ -57,8 +62,8 @@ function authenticateUser({ username, password }) {
 }
 
 // Register a new user
-function registerUser({ username, password }) {
-    if (!username || !password) {
+function registerUser({ firstname, lastname, username, password }) {
+    if (!firstname || !lastname || !username || !password) {
         alert("All fields are required!");
         return false;
     }
@@ -69,16 +74,15 @@ function registerUser({ username, password }) {
         return false;
     }
 
-    users.push({ username, password });
-    saveUsers(users);
+    const newUser = User(firstname, lastname, username, password);
+    saveUser(newUser);
     alert("Registration successful! You can now log in.");
     return true;
 }
 
-// Logout user
+// Logout the current user
 function logoutUser() {
-    handleSession("remove");
+    fajax("DELETE", "currentUser"); // Remove session
     alert("You have successfully logged out!");
     return true;
 }
-

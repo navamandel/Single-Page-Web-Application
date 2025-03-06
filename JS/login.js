@@ -1,13 +1,5 @@
 function loadLoginPage() {
-    const template = document.getElementById(`login-template`);
-    const content = template.content.cloneNode(true);
-    document.getElementById("app").innerHTML = "";
-    document.getElementById("app").appendChild(content);
-
-    const container = document.getElementById("container");
-    const registerBtn = document.getElementById("register-btn");
-    const loginBtn = document.getElementById("login-btn");
-
+    initializePage("login");
     // Toggle between login and registration forms
     registerBtn.addEventListener("click", () => {
         container.classList.add("active");
