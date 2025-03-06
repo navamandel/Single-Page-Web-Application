@@ -1,4 +1,7 @@
 const DB_API = {
+    taskId: 1001,
+    courseId: 1001,
+
     add: function(file, data) {
         let user = JSON.parse(this.get());
         let index;
@@ -10,14 +13,16 @@ const DB_API = {
                 this.handleData(data.username, data, "set");
                 return 200;
             case "tasks":
+                data.id = this.taskId++;
                 index = user.tasks.findIndex(task => task.date > data.date);
                 index !== -1 ? user.tasks.splice(index-1, 0, data) : user.tasks.push(data);
                 this.handleData(user.username, user, "set");
                 return 200;
             case "courses":
+                data.id = this.courseId++;
                 let temp = user.courses
-                    .filter(cors => cors.day === data.day)
-                    .find(cors => cors.time > data.time);
+                    .filter(course => course.day === data.day)
+                    .find(course => course.time > data.time);
                 temp ? index = user.courses.findIndex(temp) : index = null;
                 index !== -1 ? user.courses.splice(index-1, 0, data) : user.courses.push(data);
                 this.handleData(user.username, user, "set");
@@ -38,6 +43,7 @@ const DB_API = {
         } 
 
         let dataToReturn = file === "users" ? this.handleData("Users", "", "get")
+            : file === "currentUser" ? {"username": curUser.username, "password": curUser.password, "firstName": curUser.firstName, "lastName": curUser.lastName}
             : file === "tasks" ? curUser.tasks
             : file === "courses" ? curUser.courses
             : !file ? curUser
@@ -55,14 +61,13 @@ const DB_API = {
 
         switch (file) {
             case "tasks":
-                index = user.tasks
-                    .findIndex(task => task.name === data.name && task.description === data.description);
+                index = user.tasks.findIndex(task => task.id === data.id);
                 if (index === -1) return 404;
                 user.tasks.splice(index, 1, data);
                 this.handleData(user.username, user, "set");
                 return 200;
             case "courses":
-                index = user.courses.findIndex(cors => cors.name === data.name && cors.day === data.day);
+                index = user.courses.findIndex(cors => cors.id === data.id);
                 if (index === -1) return 404;
                 user.courses.splice(index, 1, data);
                 this.handleData(user.username, user, "set");
@@ -75,10 +80,10 @@ const DB_API = {
                 
                 user.username = data.username;
                 user.password = data.password;
-                this.update("curUser", user.username);
+                this.update("currentUser", user.username);
                 this.handleData(user.username, user, "set");
                 return 200;
-            case "curUser":
+            case "currentUser":
                 this.handleData("user", data, "set", false);
                 return 200;
             default:
@@ -157,21 +162,21 @@ const DB_API = {
             }
         }
     },
-    
+
     prepData: function(key_, value_) {
         let key, value;
-        if (!isJSON(key) ) {
-            if (typeof key !== string) {
-                key = JSON.stringify(key);
+        if (!isJSON(key_) ) {
+            if (typeof key_ !== string) {
+                key = JSON.stringify(key_);
             } else {
-                key = key.replace(/^'(.*)'$/, '"$1"');
+                key = key_.replace(/^'(.*)'$/, '"$1"');
             }
         }
-        if (!isJSON(value) ) {
-            if (typeof value !== string) {
-                value = JSON.stringify(value);
+        if (!isJSON(value_) ) {
+            if (typeof value_ !== string) {
+                value = JSON.stringify(value_);
             } else {
-                value = value.replace(/^'(.*)'$/, '"$1"');
+                value = value_.replace(/^'(.*)'$/, '"$1"');
             }
         }
         return key, value;
