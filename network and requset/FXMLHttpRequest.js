@@ -6,6 +6,7 @@ class FXMLHttpRequest {
         this.readyState_ = 0;
         this.response_ = null;
         this.onreadystatechange = null;
+        this.delay = Math.floor(Math.random * 3) + 1;
     }
 
     get status() {
@@ -41,12 +42,11 @@ class FXMLHttpRequest {
             this.changeReadyStates("readystatechange");
 
             let destination;
-            if (this.file === "users") {
-                destination = "server1";
-            } else {
+            if (this.file === ("tasks" || "courses")) {
                 destination = "server2";
+            } else {
+                destination = "server1";
             }
-            
 
             let serverResponse = sendToNetwork.send(this.method, this.file, destination, data);
             
@@ -59,7 +59,7 @@ class FXMLHttpRequest {
                 this.changeReadyStates("readystatechange");
             }
             
-        }, 500);
+        }, this.delay*1000);
     }
 
     changeReadyStates(eventName) {
