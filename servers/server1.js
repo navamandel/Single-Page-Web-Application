@@ -21,7 +21,7 @@ const server1 = {
     },
 
     GET: function(data) {
-        const users = DB_API.get("users");
+        const users = DB_API1.get(data);
         if (users) {
             return {"status": 200, 
                     "status_text": this.status_codes[200], 
@@ -34,7 +34,7 @@ const server1 = {
     },
 
     POST: function(data) {
-        let status = DB_API.add("users", data);
+        let status = DB_API1.add("users", data);
         return {"status": status, 
                 "status_text": this.status_codes[status], 
                 "response": this.status_codes[status]};
@@ -50,14 +50,14 @@ const server1 = {
             return {"status": this.status_codes["SUCCESS"], "response": "SUCCESS"};
         }*/
 
-       let status = DB_API.update("users", data);
+       let status = DB_API1.update("users", data);
        return {"status": status, 
                "status_text": this.status_codes[status], 
                "response": this.status_codes[status]};
     },
 
     DELETE: function(data) {
-        let status = DB_API.delete("users", data);
+        let status = DB_API1.delete("users", data);
         return {"status": status, 
                 "status_text": this.status_codes[status], 
                 "response": this.status_codes[status]};

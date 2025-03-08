@@ -19,7 +19,7 @@ const server2 = {
     },
 
     GET: function(file) {
-        let dataToReturn = DB_API.get(file);
+        let dataToReturn = DB_API2.get(file);
 
         if (dataToReturn) {
             return {"status": 200, 
@@ -33,21 +33,21 @@ const server2 = {
     },
 
     POST: function(file, data) {
-        let status = DB_API.add(file, data);
+        let status = DB_API2.add(file, data);
         return {"status": status, 
                 "status_text": this.status_codes[status], 
                 "response": this.status_codes[status]};
     },
 
     PUT: function(file, data) {
-        let status = DB_API.update(file, data);
+        let status = DB_API2.update(file, data);
         return {"status": status, 
                 "status_text": this.status_codes[status], 
                 "response": this.status_codes[status]};
     },
 
     DELETE: function(file, data = null) {
-        let status = DB_API.delete(file, data)
+        let status = DB_API2.delete(file, data)
         return {"status": status, 
                 "status_text": this.status_codes[status], 
                 "response": this.status_codes[status]};
