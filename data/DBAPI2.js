@@ -1,23 +1,17 @@
-const DB_API = {
+const DB_API2 = {
     taskId: 1001,
     courseId: 1001,
 
     add: function(file, data) {
-        let user = JSON.parse(this.get());
+        const user = JSON.parse(DB_API1.get("currentUser"));
         let index;
+
         switch (file) {
-            case "users":
-                const users = JSON.parse(this.get(file));
-                users[data.username] = data.password;
-                this.handleData("Users", users, "set");
-                this.handleData(data.username, data, "set");
-                return 200;
             case "tasks":
                 data.id = this.taskId++;
                 index = user.tasks.findIndex(task => task.date > data.date);
                 index !== -1 ? user.tasks.splice(index-1, 0, data) : user.tasks.push(data);
-                this.handleData(user.username, user, "set");
-                return 200;
+                return this.handleData(user.username, user, "set");
             case "courses":
                 data.id = this.courseId++;
                 let temp = user.courses
@@ -25,38 +19,32 @@ const DB_API = {
                     .find(course => course.time > data.time);
                 temp ? index = user.courses.findIndex(temp) : index = null;
                 index !== -1 ? user.courses.splice(index-1, 0, data) : user.courses.push(data);
-                this.handleData(user.username, user, "set");
-                return 200;
+                return this.handleData(user.username, user, "set");
             default:
                 return 404;
         }
     },
 
-    get: function(file = null) {
-        if (!localStorage.getItem("Users")) {
-            this.handleData("Users", "", "set");
+    get: function(file, id = null) {
+        const user = JSON.parse(DB_API1.get("currentUser"));
+        let dataToReturn;
+
+        if (id) {
+            dataToReturn = file === "tasks" ? user.tasks.find(task => task.id === id)
+                : file === "courses" ? user.courses.find(course => course.id === id)
+                : undefined;
+        } else {
+            dataToReturn = file === "tasks" ? user.tasks
+                : file === "courses" ? user.courses
+                : undefined;
         }
-        let curUser = this.handleData("user", "", "get", false);
-        if (curUser) {
-            curUser = JSON.parse(curUser);
-            curUser = JSON.parse(this.handleData(curUser, "", "get"));
-        } 
-
-        let dataToReturn = file === "users" ? this.handleData("Users", "", "get")
-            : file === "currentUser" ? {"username": curUser.username, "password": curUser.password, "firstName": curUser.firstName, "lastName": curUser.lastName}
-            : file === "tasks" ? curUser.tasks
-            : file === "courses" ? curUser.courses
-            : !file ? curUser
-            : "";
         
-        if (!isJSON(dataToReturn)) dataToReturn = JSON.stringify(dataToReturn);
-
+        if (!dataToReturn) return 404;
         return dataToReturn;
-
     },
 
     update: function(file, data) {
-        let user = JSON.parse(this.get());
+        const user = JSON.parse(DB_API1.get("currentUser"));
         let index;
 
         switch (file) {
@@ -64,35 +52,19 @@ const DB_API = {
                 index = user.tasks.findIndex(task => task.id === data.id);
                 if (index === -1) return 404;
                 user.tasks.splice(index, 1, data);
-                this.handleData(user.username, user, "set");
-                return 200;
+                return this.handleData(user.username, user, "set")
             case "courses":
                 index = user.courses.findIndex(cors => cors.id === data.id);
                 if (index === -1) return 404;
                 user.courses.splice(index, 1, data);
-                this.handleData(user.username, user, "set");
-                return 200;
-            case "users":
-                const users = JSON.parse(this.get("users"));
-                delete users[user.username];
-                users[data.username] = data.password;
-                this.handleData("Users", users, "set");
-                
-                user.username = data.username;
-                user.password = data.password;
-                this.update("currentUser", user.username);
-                this.handleData(user.username, user, "set");
-                return 200;
-            case "currentUser":
-                this.handleData("user", data, "set", false);
-                return 200;
+                return this.handleData(user.username, user, "set");
             default:
                 return 404;
         }
     },
 
     delete: function(file, data) {
-        const user = JSON.parse(this.get());
+        const user = JSON.parse(DB_API1.get("currentUser"));
         let index;
 
         switch (file) {
@@ -116,17 +88,7 @@ const DB_API = {
                 }
                 this.handleData(user.username, user, "set");
                 return 200;
-            case "users":
-                const users = JSON.parse(this.get());
-                delete users[user.username];
-                this.handleData("Users", users, "set");
-                this.handleData(user.username, "", "remove");
-                this.handleData("user", "", "remove", false);
-                return 200;
-            default:
-                return 404;
-        }
-        
+            }
     },
 
     //---Helper Functions---
@@ -182,4 +144,3 @@ const DB_API = {
         return key, value;
     }
 };
-
