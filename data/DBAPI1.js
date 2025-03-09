@@ -95,22 +95,22 @@ const DB_API1 = {
     },
 
     prepData: function(key_, value_) {
-        let key, value;
-        if (!isJSON(key_) ) {
-            if (typeof key_ !== string) {
-                key = JSON.stringify(key_);
-            } else {
-                key = key_.replace(/^'(.*)'$/, '"$1"');
-            }
+        let key = key_;
+        let value = value_;
+
+        if (typeof key_ !== "string") {
+            key = JSON.stringify(key_);
+        } else if (/^'/.test(key_)) {
+            key = key_.replace(/^'(.*)'$/, '"$1"');
         }
-        if (!isJSON(value_) ) {
-            if (typeof value_ !== string) {
-                value = JSON.stringify(value_);
-            } else {
-                value = value_.replace(/^'(.*)'$/, '"$1"');
-            }
+
+        if (typeof value_ !== "string") {
+            value = JSON.stringify(value_);
+        } else if (/^'/.test(value_)) {
+            value = value_.replace(/^'(.*)'$/, '"$1"');
         }
-        return key, value;
+
+        return { key, value };
     }
 };
 
