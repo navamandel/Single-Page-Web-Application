@@ -10,17 +10,22 @@ const DB_API1 = {
     },
 
     get: function(user = null) {
- debugger
+        console.log("in db not setting the users");
         if (user) {
             let curUser = this.handleData("user", "", "get", false);
             if (curUser) {
                 curUser = JSON.parse(curUser);
-                return this.handleData(curUser, "", "get");
+                curUser = this.handleData(curUser, "", "get");
+                return {"firstname": curUser.firstname,
+                        "lastname": curUser.lastname,
+                        "username": curUser.username,
+                        "password": curUser.password};
             } 
             return 404;
         }
 
         if (!localStorage.getItem("Users")) {
+            console.log("in db setting the users");
             this.handleData("Users", "", "set"); 
         } 
         
