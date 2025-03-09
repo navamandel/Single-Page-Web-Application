@@ -26,6 +26,7 @@ class FXMLHttpRequest {
     }
 
     open(method, file) {
+        console.log("fajax");
         this.method = method;
         this.file = file;
         this.readyState_ = 1;
@@ -48,9 +49,11 @@ class FXMLHttpRequest {
                 destination = "server1";
             }
 
+            console.log("sending to network");
             let serverResponse = sendToNetwork.send(this.method, this.file, destination, data);
             
             if (serverResponse) {
+                console.log("received response from network");
                 this.status_ = serverResponse["status"];
                 this.status_text_ = serverResponse["status_text"];
                 this.response_ = serverResponse["response"];
