@@ -1,17 +1,20 @@
 class Network{
-    delay = Math.floor(Math.random * 3) + 1;
+    delay = Math.floor(Math.random() * 3) + 1;
 
-    send(method, file, destination, data = null) {
+    send(method, file, destination, data, callback) {
+        let response;
 
         setTimeout(() => {
             if (destination === "server1") {
                 console.log("in network, sending to server");
-                return server1.processRequest(method, data);
+                response = server1.processRequest(method, data);
             }
     
             if (destination === "server2") {
-                return server2.processRequest(method, file, data);
+                response = server2.processRequest(method, file, data);
             }
+
+            if (callback) callback(response);
         }, this.delay*1000);
         
 

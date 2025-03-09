@@ -6,7 +6,7 @@ class FXMLHttpRequest {
         this.readyState_ = 0;
         this.response_ = null;
         this.onreadystatechange = null;
-        this.delay = Math.floor(Math.random * 3) + 1;
+        this.delay = Math.floor(Math.random() * 3) + 1;
     }
 
     get status() {
@@ -32,7 +32,7 @@ class FXMLHttpRequest {
         this.readyState_ = 1;
     }
 
-    send(data = null) {
+    send(data = null, callback) {
         this.readyState_ = 2;
         this.changeReadyStates("readystatechange");
 
@@ -42,27 +42,28 @@ class FXMLHttpRequest {
             this.readyState_ = 3;
             this.changeReadyStates("readystatechange");
 
-            let destination;
-            if (this.file === ("tasks" || "courses")) {
-                destination = "server2";
-            } else {
-                destination = "server1";
-            }
+            let destination = (this.file === "tasks" || this.file === "courses") ? "server2" : "server1";
+            
 
             console.log("sending to network");
-            let serverResponse = sendToNetwork.send(this.method, this.file, destination, data);
+            sendToNetwork.send(this.method, this.file, destination, data, (serverResponse) => {
+                console.log(serverResponse);
             
-            if (serverResponse) {
-                console.log("received response from network");
-                this.status_ = serverResponse["status"];
-                this.status_text_ = serverResponse["status_text"];
-                this.response_ = serverResponse["response"];
+                if (serverResponse) {
+                    console.log("received response from network");
+                    this.status_ = serverResponse["status"];
+                    this.status_text_ = serverResponse["status_text"];
+                    this.response_ = serverResponse["response"];
 
-                this.readyState_ = 4;
-                this.changeReadyStates("readystatechange");
-            }
+                    this.readyState_ = 4;
+                    this.changeReadyStates("readystatechange");
+                }
+
+                if (callback) callback(serverResponse);
+            });
             
-        }, this.delay*1000);
+            
+        }, this.delay*0);
     }
 
     changeReadyStates(eventName) {

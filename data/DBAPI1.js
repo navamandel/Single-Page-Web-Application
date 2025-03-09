@@ -1,74 +1,61 @@
 const DB_API1 = {
 
     add: function(file, data) {
-        const users = JSON.parse(this.get(file));
+        console.log(file, data);
+        const users = JSON.parse(this.get());
         users[data.username] = data.password;
-        let status = this.handleData("Users", users, "set");
-        if (status !== 200) return status;
-        status = this.handleData(data.username, data, "set");
-        return status;
+        localStorage.setItem("Users", JSON.stringify(users));
+        localStorage.setItem(data.username, JSON.stringify(data));
     },
 
     get: function(user = null) {
-        console.log("in db not setting the users");
+        if (!localStorage.getItem("Users")) {
+            console.log("in db setting the users");
+            localStorage.setItem("Users", "{}")
+            return "{}";
+        } 
+
         if (user) {
             let curUser = this.handleData("user", "", "get", false);
             if (curUser) {
                 curUser = JSON.parse(curUser);
                 curUser = this.handleData(curUser, "", "get");
-                return {"firstname": curUser.firstname,
+                let temp = {"firstname": curUser.firstname,
                         "lastname": curUser.lastname,
                         "username": curUser.username,
                         "password": curUser.password};
+                return JSON.stringify(temp);
             } 
             return 404;
         }
-
-        if (!localStorage.getItem("Users")) {
-            console.log("in db setting the users");
-            this.handleData("Users", "", "set"); 
-        } 
         
-        return this.handleData("Users", "", "get");
+        return localStorage.getItem("Users");
     },
 
     update: function(data) {
-        let user = JSON.parse(this.get());
-        
-        const users = JSON.parse(this.get("users"));
-        delete users[user.username];
-        users[data.username] = data.password;
-        let status = this.handleData("Users", users, "set");
-        if (status !== 200) return status;
-              
-        user.username = data.username;
-        user.password = data.password;
-        this.update("currentUser", user.username);
-        status = this.handleData(user.username, user, "set");
-        if (status !== 200) return status;
+        sessionStorage.setItem("currentUser", JSON.stringify(data));
 
-        status = this.handleData("user", data, "set", false);
-        
-        return status;
     },
 
     delete: function(file, data) {
-        const user = JSON.parse(this.get());
-        const users = JSON.parse(this.get());
+        const user = JSON.parse(this.get("currentUser"));
+        sessionStorage.removeItem("currentUser");
 
-        delete users[user.username];
-        let status = this.handleData("Users", users, "set");
-        if (status !== 200) return status;
-        status = this.handleData(user.username, "", "remove");
-        if (status !== 200) return status;
-        status = this.handleData("user", "", "remove", false);
-        return status;
+        if (file !== "currentUser") {
+            const users = JSON.parse(this.get());
+
+            localStorage.removeItem(user.username);
+            delete users[user.username];
+            localStorage.setItem("Users", JSON.stringify(users));
+        }
+        
     },
 
     //---Helper Functions---
-    handleData: function(key_, value_, method, isLS = true) {
+    handleData: function(key, value, method, isLS = true) {
         
-        let key, value = this.prepData(key_, value_);
+        //let { key, value } = this.prepData(key_, value_);
+        //console.log({ key, value });
 
         if (!isLS) {
             switch (method) {
@@ -99,8 +86,9 @@ const DB_API1 = {
         }
     },
 
-    prepData: function(key_, value_) {
-        let key = key_;
+    prepData: function(data) {
+
+        /*let key = key_;
         let value = value_;
 
         if (typeof key_ !== "string") {
@@ -109,13 +97,15 @@ const DB_API1 = {
             key = key_.replace(/^'(.*)'$/, '"$1"');
         }
 
-        if (typeof value_ !== "string") {
+        if (value_ === "") {
+            value = value_;
+        } else if (typeof value_ !== "string") {
             value = JSON.stringify(value_);
         } else if (/^'/.test(value_)) {
             value = value_.replace(/^'(.*)'$/, '"$1"');
         }
 
-        return { key, value };
+        return { key, value };*/
     }
 };
 

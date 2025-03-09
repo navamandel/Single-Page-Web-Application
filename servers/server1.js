@@ -51,7 +51,7 @@ const server1 = {
             return {"status": this.status_codes["SUCCESS"], "response": "SUCCESS"};
         }*/
 
-       let status = DB_API1.update("currentUser", data);
+       let status = DB_API1.update(data);
        return {"status": status, 
                "status_text": this.status_codes[status], 
                "response": this.status_codes[status]};
