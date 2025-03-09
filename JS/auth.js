@@ -17,6 +17,8 @@ function User(firstname, lastname, username, password) {
 
 // Manage user actions (register, login, logout, retrieve user)
 function manageUsers(action, data) {
+    console.log(data);
+    
     switch (action) {
         case "register":
             return registerUser(data);
@@ -69,6 +71,7 @@ console.log(user);
 
 // Register a new user
 function registerUser({ firstname, lastname, username, password }) {
+    console.log("im in here");
     if (!firstname || !lastname || !username || !password) {
         alert("All fields are required!");
         return false;

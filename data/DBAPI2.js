@@ -94,7 +94,7 @@ const DB_API2 = {
     //---Helper Functions---
     handleData: function(key_, value_, method, isLS = true) {
         
-        let key, value = prepData(key_, value_);
+        let key, value = this.prepData(key_, value_);
 
         if (!isLS) {
             switch (method) {

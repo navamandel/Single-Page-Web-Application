@@ -10,7 +10,7 @@ const DB_API1 = {
     },
 
     get: function(user = null) {
-
+ debugger
         if (user) {
             let curUser = this.handleData("user", "", "get", false);
             if (curUser) {
@@ -63,7 +63,7 @@ const DB_API1 = {
     //---Helper Functions---
     handleData: function(key_, value_, method, isLS = true) {
         
-        let key, value = prepData(key_, value_);
+        let key, value = this.prepData(key_, value_);
 
         if (!isLS) {
             switch (method) {

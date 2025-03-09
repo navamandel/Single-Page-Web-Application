@@ -15,7 +15,6 @@ function loadLoginPage() {
 }
 
 function handleFormSubmission(action){
-        
     // Handle form submissio
         if (action === "Log In") {
             const username = document.getElementById("username").value.trim();
@@ -26,7 +25,9 @@ function handleFormSubmission(action){
              loadHomePage();
             } 
 
-        } else if (action === "Sign up") {
+        } else if (action === "Sign Up") {
+            const firstname = document.getElementById("firstname").value.trim();
+            const lastname = document.getElementById("lastname").value.trim();
             const username = document.getElementById("newusername").value.trim();
             const password = document.getElementById("newpw").value.trim();
             const confirmPassword = document.getElementById("confirmpw").value.trim();
@@ -41,7 +42,7 @@ function handleFormSubmission(action){
                 return;
             }
 
-            if (manageUsers("register",{ username, password })) {
+            if (manageUsers("register",{ firstname,lastname,username, password })) {
                 loadHomePage();
             }
         }
