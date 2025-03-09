@@ -1,5 +1,9 @@
 function loadLoginPage() {
     initializePage("login");
+
+    let registerBtn=document.getElementById("register-btn");
+    let loginBtn=document.getElementById("login-btn");
+
     // Toggle between login and registration forms
     registerBtn.addEventListener("click", () => {
         container.classList.add("active");

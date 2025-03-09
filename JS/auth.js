@@ -34,7 +34,10 @@ function manageUsers(action, data) {
 
 // Retrieve all users
 function getUsers() {
-    return fajax("GET", "users") || [];
+   let response= fajax("GET", "users") || [];
+   console.log(response);
+   
+   return response
 }
 
 // Save a new user (used in registration)
@@ -50,7 +53,10 @@ function authenticateUser({ username, password }) {
     }
 
     const users = getUsers();
+    console.log(users);
+    
     const user = users.find(user => user.username === username && user.password === password);
+console.log(user);
 
     if (user) {
         fajax("PUT", "currentUser", user); // Save current session user

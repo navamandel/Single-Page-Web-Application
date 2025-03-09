@@ -1,6 +1,6 @@
 
 document.addEventListener("DOMContentLoaded", () => {
-    initializePage("login");
+    loadLoginPage();
 });
 
 
@@ -9,7 +9,9 @@ document.addEventListener("DOMContentLoaded", () => {
  * @param {string} templateId - The ID of the template to load
  */
 function initializePage(templateId) {
-    const template = document.getElementById(templateId);
+    console.log(templateId);
+    
+    const template = document.getElementById(`${templateId}-template`);
     const content = template.content.cloneNode(true);
 
     // Clear existing content and append the new page content
@@ -17,18 +19,21 @@ function initializePage(templateId) {
     document.getElementById("app").appendChild(content);
 
     // Load common UI components
-    document.getElementById("sidebar-container").innerHTML = document.getElementById("sidebar-template").innerHTML;
-    document.getElementById("header-container").innerHTML = document.getElementById("header-template").innerHTML;
-    document.getElementById("modal-container").innerHTML = document.getElementById("modal-template").innerHTML;
+    if(!templateId=="login"){
+        document.getElementById("sidebar-container").innerHTML = document.getElementById("sidebar-template").innerHTML;
+        document.getElementById("header-container").innerHTML = document.getElementById("header-template").innerHTML;
+        document.getElementById("modal-container").innerHTML = document.getElementById("modal-template").innerHTML;
 
-    // Ensure modals are hidden by default
-    document.getElementById("custom-modal").style.display = "none";
+        // Ensure modals are hidden by default
+        document.getElementById("custom-modal").style.display = "none";
+    }
 }
 
 
 //file : "users", "courses", "tasks"
 //methods: "GET", "POST"-> add, "PUT" -> update, "DELETE"
 function fajax(method, file, data = null) {
+    
     let response_;
     const fxhr = new FXMLHttpRequest();
     fxhr.open(method, file);
