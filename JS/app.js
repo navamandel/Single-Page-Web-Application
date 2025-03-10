@@ -1,6 +1,11 @@
 
 document.addEventListener("DOMContentLoaded", () => {
-    loadLoginPage();
+    if(getCurrentUser){
+        loadHomePage();
+    }
+    else{
+        loadLoginPage();
+    }
 });
 
 
@@ -19,7 +24,8 @@ function initializePage(templateId) {
     document.getElementById("app").appendChild(content);
 
     // Load common UI components
-    if(templateId==="home" || templateId==="schedule" || templateId==="tasks" ){        
+    if(templateId==="home" || templateId==="schedule" || templateId==="tasks" || templateId==="user" ){      
+
         document.getElementById("sidebar-container").innerHTML = document.getElementById("sidebar-template").innerHTML;
         document.getElementById("header-container").innerHTML = document.getElementById("header-template").innerHTML;
         document.getElementById("modal-container").innerHTML = document.getElementById("modal-template").innerHTML;
@@ -53,10 +59,7 @@ function fajax(method, file, data = null) {
 
 function updatePageTitle(title, description) {
     console.log(title, description);
-    
-    let titlepage =document.getElementById("page-title");
-    console.log(titlepage);
-    
+    document.getElementById("page-title").textContent=title;
     document.getElementById("page-description").textContent = description;
 } 
 

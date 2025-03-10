@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="./CSS/home.css">
     <link rel="stylesheet" href="./CSS/schedule.css">
     <link rel="stylesheet" href="./CSS/tasks.css">
+    <link rel="stylesheet" href="./CSS/user.css">
+
     <title>Student Planner</title>
 </head>
 <body>
@@ -23,6 +25,7 @@
                 <li onclick="loadHomePage();">Home</li>
                 <li onclick="loadWeeklySchedule();">Weekly Schedule</li>
                 <li onclick="loadTasksPage();">Tasks</li>
+                <li onclick="loadUserPage();">Profile</li>
                 <li onclick="loadLoginPage();">LogOut</li>
             </ul>
         </nav>
@@ -120,7 +123,7 @@
             <div class="main-content">
                 <div id="header-container"></div>
                 <div class="schedule-header">
-                    <button class="add-course-btn">➕ Add Course</button>
+                    <button class="add-course-btn" onclick="openCourseModal()">➕ Add Course</button>
                 </div>
                 <div class="weekly-grid" id="weekly-grid"></div>
             </div>
@@ -153,6 +156,57 @@
         </div>
         <div id="modal-container"></div>
     </template>
+
+<template id="user-template">
+    <div class="home-container">
+        <div id="sidebar-container"></div>
+        <div class="main-content">
+            <div id="header-container"></div>
+            <div class="form-container edit">
+                <form id="user-form">
+                    <h1>User Profile</h1>
+
+                    <!-- User info section -->
+                    <div class="user-info-container">
+                        <div class="full-width">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" value="CurrentUsername" disabled>
+                        </div>
+
+                        <div>
+                            <label for="firstname">First Name</label>
+                            <input type="text" id="firstname">
+                        </div>
+
+                        <div>
+                            <label for="lastname">Last Name</label>
+                            <input type="text" id="lastname">
+                        </div>
+                    </div>
+
+                    <!-- Password update section (hidden by default) -->
+                    <div class="password-container hidden" id="password-section">
+                        <label for="newpw">New Password</label>
+                        <input type="password" id="newpw" placeholder="Enter new password">
+
+                        <label for="confirmpw">Confirm New Password</label>
+                        <input type="password" id="confirmpw" placeholder="Confirm new password">
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="button-group">
+                        <button type="submit" id="update-profile">Update Profile</button>
+                        <button type="button" id="toggle-password">Change Password</button>
+                        <button type="button" id="delete-account">Delete Account</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div id="modal-container"></div>
+    </div>
+</template>
+
+    
     <script src="./data/DBAPI1.js"></script>
     <script src="./data/DBAPI2.js"></script>
     <script src="./servers/server1.js"></script>
@@ -165,6 +219,7 @@
     <script src="./JS/login.js"></script>
     <script src="./JS/schedule.js"></script>
     <script src="./JS/tasks.js"></script>
+    <script src="./JS/user.js"></script>
     <script src="./JS/app.js"></script>
     
     
