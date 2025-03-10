@@ -4,7 +4,7 @@ const DB_API2 = {
 
     add: function(file, data) {
         const user = DB_API1.get("user");
-        if (!user) return 408;
+        if (!user) return 404;
         let index;
 
         switch (file) {
@@ -37,7 +37,7 @@ const DB_API2 = {
     get: function(file, id = null) {
         const user = DB_API1.get("user");
         console.log(user);
-        if (!user) return 408;
+        if (!user) return 404;
         
         let dataToReturn;
 
@@ -58,7 +58,7 @@ const DB_API2 = {
 
     update: function(file, data) {
         const user = DB_API1.get("user");
-        if (!user) return 408;
+        if (!user) return 404;
         let index;
 
         switch (file) {
@@ -81,7 +81,7 @@ const DB_API2 = {
 
     delete: function(file, data) {
         const user = DB_API1.get("user");
-        if (!user) return 408;
+        if (!user) return 404;
         let index;
 
         switch (file) {

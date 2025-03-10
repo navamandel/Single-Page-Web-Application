@@ -58,13 +58,15 @@ function updateUserProfile(event) {
             updatedUser = {
                 firstname: document.getElementById("firstname").value,
                 lastname: document.getElementById("lastname").value,
+                username: document.getElementById("username").value,
                 password: newpassword
             };
         }
     } else {
         updatedUser = {
             firstname: document.getElementById("firstname").value,
-            lastname: document.getElementById("lastname").value
+            lastname: document.getElementById("lastname").value,
+            username: document.getElementById("username").value
         };
     }
 
