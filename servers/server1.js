@@ -15,7 +15,7 @@ const server1 = {
         } else if (method === "PUT") {
             return this.PUT(file, data);
         } else if (method === "DELETE") {
-            return this.DELETE(data);
+            return this.DELETE(file, data);
         } 
         
     },
@@ -57,8 +57,8 @@ const server1 = {
                "response": this.status_codes[status]};
     },
 
-    DELETE: function(data) {
-        let status = DB_API1.delete("users", data);
+    DELETE: function(file, data) {
+        let status = DB_API1.delete(file, data);
         return {"status": status, 
                 "status_text": this.status_codes[status], 
                 "response": this.status_codes[status]};

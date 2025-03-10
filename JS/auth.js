@@ -42,7 +42,7 @@ function manageUsers(action, data, callback) {
             authenticateUser(data, callback);
             break;
         case "logout":
-            logoutUser();
+            logoutUser(callback);
             break;
         case "getCurrentUser":
             getCurrentUser();
@@ -223,7 +223,7 @@ function registerUser({ firstname, lastname, username, password }, callback) {
 }
 
 // Logout the current user
-function logoutUser() {
+function logoutUser(callback) {
     //fajax("DELETE", "currentUser"); // Remove session
 
     const fxhr = new FXMLHttpRequest();
@@ -232,6 +232,7 @@ function logoutUser() {
 
     fxhr.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
+            callback(true);
             hideLoader();
             return true;
         }

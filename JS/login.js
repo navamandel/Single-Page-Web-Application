@@ -1,4 +1,16 @@
-function loadLoginPage() {
+function loadLoginPage(logout = false) {
+    if (logout) {
+        manageUsers("logout", null, (res) => {
+            const interval = setInterval(() => {
+                if (res) {
+                    clearInterval(interval);
+                    initializePage("login");
+                }
+            }, 500);
+            
+        });
+
+    }
     initializePage("login");
     document.getElementById("custom-modal").style.display = "none";
 

@@ -83,7 +83,7 @@ const DB_API1 = {
             delete users[user.username];
             localStorage.setItem("Users", JSON.stringify(users));
             localStorage.removeItem(user.username);
-        }
+        } 
         return 200;
     },
 
