@@ -39,22 +39,38 @@ function loadUserPage() {
  */
 function updateUserProfile(event) {
     event.preventDefault();
+    let updatedUser;
+    
+    if (document.getElementById("newpw")) {
+        let newpassword = document.getElementById("newpw").value;
+        let confirmpw = document.getElementById("confirmpw").value;
+        if (newpassword !== confirmpw) {
+            alert("Passwords must match!");
+        } else {
+            updatedUser = {
+                firstname: document.getElementById("firstname").value,
+                lastname: document.getElementById("lastname").value,
+                password: newpassword
+            };
+        }
+    } else {
+        updatedUser = {
+            firstname: document.getElementById("firstname").value,
+            lastname: document.getElementById("lastname").value
+        };
+    }
 
-    const updatedUser = {
-        firstname: document.getElementById("firstname").value,
-        lastname: document.getElementById("lastname").value
-    };
 
     const fxhr = new FXMLHttpRequest();
-    fxhr.open("PUT", "users");
+    fxhr.open("PUT", "user");
     fxhr.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             alert("Profile updated successfully!");
-        } else {
+        } else if (this.readyState === 4) {
             alert("Failed to update profile. Please try again.");
         }
     };
-    fxhr.send(JSON.stringify(updatedUser), fxhr.onreadystatechange);
+    fxhr.send(JSON.stringify(updatedUser));
 }
 
 /**
@@ -73,11 +89,11 @@ function deleteUserAccount(event) {
                 if (this.readyState === 4 && this.status === 200) {
                     alert("Account deleted successfully.");
                     loadLoginPage(); // Redirect to login page
-                } else {
+                } else if (this.readyState === 4) {
                     alert("Failed to delete account. Please try again.");
                 }
             };
-            fxhr.send(null, fxhr.onreadystatechange);
+            fxhr.send();
         }
     );
 }

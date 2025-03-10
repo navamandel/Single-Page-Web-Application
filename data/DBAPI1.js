@@ -45,30 +45,27 @@ const DB_API1 = {
             sessionStorage.setItem("currentUser", data);
             return 200;
         }
-        const users = JSON.parse(this.get("users"));
-        const user = this.get("currentUser");
-        delete users[user.username];
-        localStorage.set("Users", JSON.stringify(users));
+       
+        let user = this.get("user");
+        let data_ = JSON.parse(data);
 
-        if (user.username !== data.username) localStorage.removeItem(user.username);
-
-        user.username = data.username;
-        user.password = data.password;
-        user.firstname = data.firstname;
-        user.lastname = data.lastname;
+        user["firstname"] = data_["firstname"];
+        user["lastname"] = data_["lastname"];
+        if (data_["password"]) user["password"] = data_["password"];
         localStorage.setItem(user.username, JSON.stringify(user));
-        sessionStorage.setItem("currentUser", data.username);
         return 200;
     },
 
     delete: function(file, data) {
-        const user = this.get("currentUser");
+        const user = this.get("user");
         sessionStorage.removeItem("currentUser");
         if (file === "users") {
             const users = JSON.parse(this.get("users"));
             delete users[user.username];
+            localStorage.setItem("Users", JSON.stringify(users));
             localStorage.removeItem(user.username);
         }
+        return 200;
     },
 
     //---Helper Functions---

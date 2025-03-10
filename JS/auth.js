@@ -9,6 +9,7 @@ function getCurrentUser(callback) {
             if (this.status === 200) {
                 if (callback) callback(JSON.parse(this.response));
             } else {
+                alert("Error with Network");
                 return null;
             }
         }
@@ -67,6 +68,8 @@ function getUsers(callback) {
    fxhr.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             if (callback) callback(JSON.parse(this.response));
+        } else if (this.readyState === 4) {
+            alert("serverError");
         }
    };
    fxhr.send();
@@ -92,7 +95,7 @@ function setCurrentUser(user, callback) {
     fxhr.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
              if (callback) callback(true);
-        } else if (this.readyState === 4) {
+        } else if (this.readyState === 4 && this.status === 408) {
             console.log("Error with server");
         }
 
