@@ -5,13 +5,14 @@ function loadHomePage() {
     initializePage("home");
     // Retrieve current user
     let currentUser;  
+    coursesLoaded=false;
+    tasksLoaded=false;
     const fxhr = new FXMLHttpRequest();
     fxhr.open("GET", "currentUser");
     showLoader();
     fxhr.onreadystatechange = function() {
         if (this.readyState === 4) {
             if (this.status === 200) {
-                hideLoader();
                 currentUser = JSON.parse(this.response);
                 console.log("Current User: ", currentUser);
                 const username = currentUser ? currentUser.username : "User";
@@ -41,6 +42,13 @@ function loadHomePage() {
     loadTodayCourses();
     loadTodayTasks();*/
 }
+function checkIfAllLoaded() {
+    
+    if (coursesLoaded && tasksLoaded) {
+        hideLoader();
+    }
+}
+
 
 /**
  * Fetches and displays today's courses
@@ -54,7 +62,6 @@ function loadTodayCourses() {
     fxhr.onreadystatechange = function() {
         if (this.readyState === 4) {
             if (this.status === 200) {
-                hideLoader(); 
 
                 allCourses = JSON.parse(this.response);
 
@@ -71,6 +78,8 @@ function loadTodayCourses() {
                     generateTimeSlots(timetableGrid);
                     displayTodayCourses(todayCourses);
                 }
+                coursesLoaded = true;
+                checkIfAllLoaded(); 
             }else{
                 hideLoader();
                 showErrorMessage(this.status_text);
@@ -170,12 +179,13 @@ function findTodayTasks(callback) {
 
     fxhr.onreadystatechange = function() {
         if (this.readyState === 4) {
-            hideLoader(); 
 
             if (this.status === 200) {
                 tasks = JSON.parse(this.response);
                 const today = new Date().toISOString().split("T")[0];
                 if (callback) callback(tasks.filter(task => task.date === today));
+                tasksLoaded = true;
+                checkIfAllLoaded(); 
             } else {
                 hideLoader();
                 showErrorMessage(this.status_text);
