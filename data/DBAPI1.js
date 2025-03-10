@@ -16,6 +16,9 @@ const DB_API1 = {
             localStorage.setItem("Users", "{}")
             return "{}";
         } 
+        if (user === "users") {
+            return localStorage.getItem("Users");
+        }
 
         let curUser = sessionStorage.getItem("currentUser");
         if (!curUser) return;
@@ -31,10 +34,7 @@ const DB_API1 = {
             return JSON.stringify(temp);
             
                 
-        } else if (user === "users") {
-            return localStorage.getItem("Users");
         } else {
-            
             return curUser_;
         }
             
