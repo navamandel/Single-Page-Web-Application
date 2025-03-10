@@ -40,8 +40,24 @@ const DB_API1 = {
             
     },
     
-    update: function(data) {
-        sessionStorage.setItem("currentUser", data);
+    update: function(file, data) {
+        if (file === "currentUser") {
+            sessionStorage.setItem("currentUser", data);
+            return 200;
+        }
+        const users = JSON.parse(this.get("users"));
+        const user = this.get("currentUser");
+        delete users[user.username];
+        localStorage.set("Users", JSON.stringify(users));
+
+        if (user.username !== data.username) localStorage.removeItem(user.username);
+
+        user.username = data.username;
+        user.password = data.password;
+        user.firstname = data.firstname;
+        user.lastname = data.lastname;
+        localStorage.setItem(user.username, JSON.stringify(user));
+        sessionStorage.setItem("currentUser", data.username);
         return 200;
     },
 

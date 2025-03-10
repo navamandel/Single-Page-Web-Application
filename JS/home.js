@@ -254,8 +254,12 @@ function toggleTaskCompletion(task) {
         `Are you sure you want to mark "${task.name}" as completed?`,
         function () {
             task.status = "Completed";
-            fajax("PUT", "tasks", task);
-            loadTodayTasks();
+            const fxhr = new FXMLHttpRequest();
+            fxhr.open("PUT", "tasks");
+            fxhr.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) loadTodayTasks();
+            };
+            fxhr.send(task);
         }
     );
 }
@@ -268,8 +272,12 @@ function deleteTask(task) {
         "Delete Task",
         `Are you sure you want to delete "${task.name}" permanently?`,
         function () {
-            fajax("DELETE", "tasks", task);
-            loadTodayTasks();
+            const fxhr = new FXMLHttpRequest();
+            fxhr.open("DELETE", "tasks");
+            fxhr.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) loadTodayTasks();
+            };
+            fxhr.send(task);
         }
     );
 }

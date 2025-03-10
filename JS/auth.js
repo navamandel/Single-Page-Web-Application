@@ -45,6 +45,9 @@ function manageUsers(action, data, callback) {
         case "getCurrentUser":
             getCurrentUser();
             break;
+        case "updateInfo":
+            updateInfo(data, callback);
+            break;
         default:
             console.error("Unknown action in manageUsers");
             if (callback) callback(null);
@@ -52,7 +55,7 @@ function manageUsers(action, data, callback) {
 }
 
 // Retrieve all users
-function getUsers() {
+function getUsers(callback) {
    //let response= fajax("GET", "users") || [];
    //console.log(response);
    
@@ -60,13 +63,13 @@ function getUsers() {
 
    const fxhr = new FXMLHttpRequest();
    fxhr.open("GET", "users");
-   fxhr.send();
 
    fxhr.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
-            return JSON.parse(this.response);
+            if (callback) callback(JSON.parse(this.response));
         }
    };
+   fxhr.send();
 }
 
 // Save a new user (used in registration)
@@ -214,4 +217,38 @@ function logoutUser() {
 
     return false;
     
+}
+
+function updateInfo(data, callback) {
+    let users, user;
+
+    getUsers((res) => {if (res) users = res});
+    const interval1 = setInterval(() => {
+        if (users) {
+            clearInterval(interval1);
+        }
+    }, 500);
+
+    getCurrentUser((res) => {if (res) user = res});
+    const interval2 = setInterval(() => {
+        if (user) {
+            clearInterval(interval2);
+        }
+    }, 500);
+
+    if (user.username !== data.username) {
+        if (users.some(user => user.username === data.username)) {
+            alert("Username already exists! Choose a different one.");
+            if (callback) callback(false);
+        }
+    }
+
+    const fxhr = new FXMLHttpRequest();
+    fxhr.open("PUT", "user");
+    fxhr.onreadystatechange = function() {
+        if (this.readyState === 4 && this.status === 200) {
+            if (callback) callback(true);
+        }
+    };
+    fxhr.send(user);
 }
