@@ -28,19 +28,21 @@ const DB_API2 = {
 
     get: function(file, id = null) {
         const user = DB_API1.get("user");
-        if (!user) return 408;
         console.log(user);
+        if (!user) return 408;
+        
         let dataToReturn;
 
         if (id) {
-            dataToReturn = file === "tasks" ? user.tasks.find(task => task.id === id)
-                : file === "courses" ? user.courses.find(course => course.id === id)
+            dataToReturn = file === "tasks" ? user["tasks"].find(task => task.id === id)
+                : file === "courses" ? user["courses"].find(course => course.id === id)
                 : undefined;
         } else {
             dataToReturn = file === "tasks" ? user.tasks
                 : file === "courses" ? user.courses
                 : undefined;
         }
+        console.log(dataToReturn);
         
         if (!dataToReturn) return 404;
         return JSON.stringify(dataToReturn);

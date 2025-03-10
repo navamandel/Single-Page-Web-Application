@@ -147,7 +147,7 @@ function getCurrentDay() {
 /**
  * Finds today's tasks
  */
-function findTodayTasks() {
+function findTodayTasks(callback) {
     let tasks; // = fajax("GET", "tasks") || [];
     const fxhr = new FXMLHttpRequest();
     fxhr.open("GET", "tasks");
@@ -174,9 +174,11 @@ function findTodayTasks() {
 function loadTodayTasks() {
     const taskList = document.getElementById("task-list");
     taskList.innerHTML = "";
-    const todayTasks = findTodayTasks((res) => {
-        if (res) return res;
+    let todayTasks;
+    findTodayTasks((res) => {
+        if (res) todayTasks = res;
     });
+    console.log(todayTasks);
 
     if (todayTasks.length === 0) {
         noItemsMessage(taskList, "No tasks scheduled for today.");

@@ -19,12 +19,9 @@ const DB_API1 = {
 
         let curUser = sessionStorage.getItem("currentUser");
         if (!curUser) return;
-        let curUser_ = localStorage.getItem(curUser);
+        let curUser_ = JSON.parse(localStorage.getItem(curUser));
 
         if (user === "currentUser") {
-            
-            
-            //let curUser_ = JSON.parse(localStorage.getItem(curUser.trim()));
             
             
             let temp = {"firstname": curUser_.firstname,
@@ -49,9 +46,13 @@ const DB_API1 = {
     },
 
     delete: function(file, data) {
-        
+        const user = this.get("currentUser");
         sessionStorage.removeItem("currentUser");
-
+        if (file === "users") {
+            const users = JSON.parse(this.get("users"));
+            delete users[user.username];
+            localStorage.removeItem(user.username);
+        }
     },
 
     //---Helper Functions---
