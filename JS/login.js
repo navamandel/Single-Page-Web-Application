@@ -1,5 +1,7 @@
 function loadLoginPage() {
     initializePage("login");
+    document.getElementById("custom-modal").style.display = "none";
+
 
     let registerBtn=document.getElementById("register-btn");
     let loginBtn=document.getElementById("login-btn");

@@ -2,7 +2,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     let user;
     let timeoutReached = false;
-    
+    initializePage("login")
     getCurrentUser((res) => {
         if (res) {
             user = res;
@@ -38,9 +38,9 @@ function initializePage(templateId) {
     // Clear existing content and append the new page content
     document.getElementById("app").innerHTML = "";
     document.getElementById("app").appendChild(content);
-
     document.getElementById("modal-container").innerHTML = document.getElementById("modal-template").innerHTML;
-    document.getElementById("modal-container").style.display="none"
+    document.getElementById("modal-container").style.display="none";
+    document.getElementById("custom-modal").style.display = "none";
 
     // Ensure modals are hidden by default
     document.getElementById("loading-overlay").style.display = "none";
@@ -49,7 +49,6 @@ function initializePage(templateId) {
 
         document.getElementById("sidebar-container").innerHTML = document.getElementById("sidebar-template").innerHTML;
         document.getElementById("header-container").innerHTML = document.getElementById("header-template").innerHTML;
-        document.getElementById("custom-modal").style.display = "none";
     }
    
 
