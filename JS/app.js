@@ -1,11 +1,27 @@
 
 document.addEventListener("DOMContentLoaded", () => {
-    if(getCurrentUser()){
-        loadHomePage();
-    }
-    else{
-        loadLoginPage();
-    }
+    let user;
+    let timeoutReached = false;
+    
+    getCurrentUser((res) => {
+        if (res) {
+            user = res;
+            if (!timeoutReached) {
+                clearTimeout(timeoutId); 
+                loadHomePage();
+            }
+        }
+    });
+    
+    const timeoutId = setTimeout(() => {
+        timeoutReached = true;
+        if (!user) {
+            console.log("User not found, redirecting to login...");
+            loadLoginPage();
+        }
+    }, 2000);
+    
+    
 });
 
 
@@ -82,6 +98,7 @@ function noItemsMessage(container, message) {
 
 
 function showCustomModal(title,message, onConfirm=null) {
+    const container= document.getElementById("modal-container")
     const modal = document.getElementById("custom-modal");
     const modaltitle = document.getElementById("modal-title");
     const modalMessage = document.getElementById("modal-message");
@@ -90,19 +107,24 @@ function showCustomModal(title,message, onConfirm=null) {
 
     modaltitle.textContent=title;
     modalMessage.textContent = message;
+    container.style.display="flex";
     modal.style.display = "flex";  
-if(onConfirm){
+  if(onConfirm){
     confirmBtn.onclick = function () {
-        modal.style.display = "none";
+        container.style.display = "none";
         onConfirm();
     };
 
     cancelBtn.onclick = function () {
-        modal.style.display = "none";
+        container.style.display = "none";
     };
-}
+  }
 else{
-    confirmBtn.style.display="none"
+    confirmBtn.style.display="none";
+
+    cancelBtn.onclick = function () {
+        container.style.display = "none";
+    };
 }
 }
 /**

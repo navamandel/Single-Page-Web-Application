@@ -293,7 +293,7 @@ function deleteTask(task) {
             fxhr.onreadystatechange = function() {
                 if (this.readyState === 4 && this.status === 200){
                     hideLoader();  
-                    loadTodayTasks();
+                    loadHomePage();
                     }
             };
             fxhr.send(task);

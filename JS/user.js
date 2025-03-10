@@ -3,13 +3,16 @@
  */
 function loadUserPage() {
     initializePage("user");
+    updatePageTitle("My Info","here you can edit your user info")
 
     // Retrieve current user
     let currentUser;
     const fxhr = new FXMLHttpRequest();
     fxhr.open("GET", "currentUser");
+    showLoader();
     fxhr.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
+            hideLoader();
             currentUser = JSON.parse(this.response);
             console.log("Loaded User Profile: ", currentUser);
 
@@ -17,9 +20,14 @@ function loadUserPage() {
             document.getElementById("username").value = currentUser.username;
             document.getElementById("firstname").value = currentUser.firstname;
             document.getElementById("lastname").value = currentUser.lastname;
+        }else if(this.readyState===4){
+            hideLoader();
+            showErrorMessage(this.status_text);
+            loadUserPage();
         }
+        
     };
-    fxhr.send(null, fxhr.onreadystatechange);
+    fxhr.send(null);
 
     // Toggle password section
     document.getElementById("toggle-password").addEventListener("click", function () {
@@ -63,11 +71,14 @@ function updateUserProfile(event) {
 
     const fxhr = new FXMLHttpRequest();
     fxhr.open("PUT", "user");
+    showLoader();
     fxhr.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
-            alert("Profile updated successfully!");
+            hideLoader();
+            showCustomModal("Done","Profile updated successfully!")
         } else if (this.readyState === 4) {
-            alert("Failed to update profile. Please try again.");
+            hideLoader();
+            showErrorMessage("Failed to update profile. Please try again.")
         }
     };
     fxhr.send(JSON.stringify(updatedUser));
@@ -85,10 +96,12 @@ function deleteUserAccount(event) {
         function () {
             const fxhr = new FXMLHttpRequest();
             fxhr.open("DELETE", "users");
+            showLoader();
             fxhr.onreadystatechange = function () {
                 if (this.readyState === 4 && this.status === 200) {
-                    alert("Account deleted successfully.");
-                    loadLoginPage(); // Redirect to login page
+                    hideLoader();
+                    showCustomModal("Done","Account deleted successfully.")
+                    loadLoginPage(); 
                 } else if (this.readyState === 4) {
                     alert("Failed to delete account. Please try again.");
                 }
