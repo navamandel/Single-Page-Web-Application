@@ -17,18 +17,13 @@ const DB_API1 = {
             return "{}";
         } 
 
+        let curUser = sessionStorage.getItem("currentUser");
+        if (!curUser) return;
+        let curUser_ = localStorage.getItem(curUser);
+
         if (user === "currentUser") {
-            console.log("it's starting to get the current user ", user);
-            let curUser = sessionStorage.getItem("currentUser");
-            console.log("key from session storage: ", sessionStorage.getItem("currentUser"));
-            let curUser_ = localStorage.getItem(curUser);
-            console.log("current user trimmed: ", curUser.trim());
-            //setTimeout(() => {
-                console.log("fetching from local storage: ", localStorage.getItem("n"));
-                console.log("fetching from local storage trimmed: ", localStorage.getItem(curUser_));
-            //}, 1000);
             
-            if (!curUser) return;
+            
             //let curUser_ = JSON.parse(localStorage.getItem(curUser.trim()));
             
             
@@ -42,29 +37,21 @@ const DB_API1 = {
         } else if (user === "users") {
             return localStorage.getItem("Users");
         } else {
-            console.log("does it return the correct thing?? ", curUser);
+            
             return curUser_;
         }
             
     },
     
     update: function(data) {
-        sessionStorage.setItem("currentUser", JSON.stringify(data));
+        sessionStorage.setItem("currentUser", data);
         return 200;
     },
 
     delete: function(file, data) {
-        const user = JSON.parse(this.get("currentUser"));
+        
         sessionStorage.removeItem("currentUser");
 
-        if (file !== "currentUser") {
-            const users = JSON.parse(this.get());
-
-            localStorage.removeItem(user.username);
-            delete users[user.username];
-            localStorage.setItem("Users", JSON.stringify(users));
-        }
-        
     },
 
     //---Helper Functions---

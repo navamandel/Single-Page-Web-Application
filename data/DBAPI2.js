@@ -3,7 +3,8 @@ const DB_API2 = {
     courseId: 1001,
 
     add: function(file, data) {
-        const user = JSON.parse(DB_API1.get("currentUser"));
+        const user = DB_API1.get("user");
+        if (!user) return 408;
         let index;
 
         switch (file) {
@@ -27,6 +28,7 @@ const DB_API2 = {
 
     get: function(file, id = null) {
         const user = DB_API1.get("user");
+        if (!user) return 408;
         console.log(user);
         let dataToReturn;
 
@@ -46,6 +48,7 @@ const DB_API2 = {
 
     update: function(file, data) {
         const user = DB_API1.get("user");
+        if (!user) return 408;
         let index;
 
         switch (file) {
@@ -68,6 +71,7 @@ const DB_API2 = {
 
     delete: function(file, data) {
         const user = DB_API1.get("user");
+        if (!user) return 408;
         let index;
 
         switch (file) {
