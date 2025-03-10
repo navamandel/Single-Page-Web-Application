@@ -2,10 +2,11 @@ const DB_API1 = {
 
     add: function(file, data) {
         console.log(file, data);
-        const users = JSON.parse(this.get());
+        const users = JSON.parse(this.get("users"));
         users[data.username] = data.password;
         localStorage.setItem("Users", JSON.stringify(users));
         localStorage.setItem(data.username, JSON.stringify(data));
+        return 200;
     },
 
     get: function(user = null) {

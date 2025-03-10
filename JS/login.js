@@ -61,7 +61,7 @@ function handleFormSubmission(action){
             //}
 
             manageUsers("register",{ firstname,lastname,username, password }, (res) => {
-                if (res) loadHomePage();
+                if (res) loadLoginPage();
             });
         }
  }
