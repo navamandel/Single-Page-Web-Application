@@ -185,9 +185,10 @@ function openCourseModal(course = null, index = null) {
     cancelBtn.onclick = function () {
         continer.style.display = "none";
     };
+    console.log(continer);
+    
 
     continer.style.display = "flex";  
-
     modal.style.display = "flex";  
 }
 
