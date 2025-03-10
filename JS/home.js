@@ -4,23 +4,68 @@
 function loadHomePage() {
     initializePage("home");
     // Retrieve current user
-    const currentUser = getCurrentUser();
-    const username = currentUser ? currentUser.username : "User";
+    let currentUser;  
+    const fxhr = new FXMLHttpRequest();
+    fxhr.open("GET", "currentUser");
+    fxhr.onreadystatechange = function() {
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                currentUser = JSON.parse(this.response);
+                console.log("Current User: ", currentUser);
+                const username = currentUser ? currentUser.username : "User";
+
+                updatePageTitle(`Welcome ${username}!`, "Here is an overview of your schedule for today.");
+                document.getElementById("custom-modal").style.display = "none";
+
+                // Load today's courses and tasks
+                loadTodayCourses();
+                loadTodayTasks();
+            }
+        }
+    };
+    fxhr.send(null, fxhr.onreadystatechange);
+
+    /*const username = currentUser ? currentUser.username : "User";
 
     updatePageTitle(`Welcome ${username}!`, "Here is an overview of your schedule for today.");
     document.getElementById("custom-modal").style.display = "none";
 
     // Load today's courses and tasks
     loadTodayCourses();
-    loadTodayTasks();
+    loadTodayTasks();*/
 }
 
 /**
  * Fetches and displays today's courses
  */
 function loadTodayCourses() {
-    const allCourses = fajax("GET", "courses") || [];
-    const today = getCurrentDay();
+    let allCourses; // = fajax("GET", "courses") || [];
+    const fxhr = new FXMLHttpRequest(); 
+    fxhr.open("GET", "courses");
+    fxhr.onreadystatechange = function() {
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                allCourses = JSON.parse(this.response);
+
+                const today = getCurrentDay();
+                const todayCourses = allCourses.filter(course => course.day === today);
+
+                // Clear previous timetable
+                const timetableGrid = document.getElementById("timetable-grid");
+                timetableGrid.innerHTML = "";
+
+                if (todayCourses.length === 0) {
+                    noItemsMessage(timetableGrid, "No courses scheduled for today.");
+                } else {
+                    generateTimeSlots(timetableGrid);
+                    displayTodayCourses(todayCourses);
+                }
+            }
+        }
+    };
+    fxhr.send(null, fxhr.onreadystatechange);
+
+    /*const today = getCurrentDay();
     const todayCourses = allCourses.filter(course => course.day === today);
 
     // Clear previous timetable
@@ -32,7 +77,7 @@ function loadTodayCourses() {
     } else {
         generateTimeSlots(timetableGrid);
         displayTodayCourses(todayCourses);
-    }
+    }*/
 }
 
 
@@ -103,9 +148,24 @@ function getCurrentDay() {
  * Finds today's tasks
  */
 function findTodayTasks() {
-    const tasks = fajax("GET", "tasks") || [];
-    const today = new Date().toISOString().split("T")[0];
-    return tasks.filter(task => task.date === today);
+    let tasks; // = fajax("GET", "tasks") || [];
+    const fxhr = new FXMLHttpRequest();
+    fxhr.open("GET", "tasks");
+    fxhr.onreadystatechange = function() {
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                tasks = JSON.parse(this.response);
+                const today = new Date().toISOString().split("T")[0];
+                if (callback) callback(tasks.filter(task => task.date === today));
+            } else {
+                if (callback) callback(false);
+            }
+        }
+    };
+    fxhr.send(null, fxhr.onreadystatechange);
+
+    //const today = new Date().toISOString().split("T")[0];
+    //return tasks.filter(task => task.date === today);
 }
 
 /**
@@ -114,7 +174,9 @@ function findTodayTasks() {
 function loadTodayTasks() {
     const taskList = document.getElementById("task-list");
     taskList.innerHTML = "";
-    const todayTasks = findTodayTasks();
+    const todayTasks = findTodayTasks((res) => {
+        if (res) return res;
+    });
 
     if (todayTasks.length === 0) {
         noItemsMessage(taskList, "No tasks scheduled for today.");

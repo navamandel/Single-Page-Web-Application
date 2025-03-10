@@ -7,7 +7,7 @@ class Network{
         setTimeout(() => {
             if (destination === "server1") {
                 console.log("in network, sending to server");
-                response = server1.processRequest(method, data);
+                response = server1.processRequest(method,file, data);
             }
     
             if (destination === "server2") {

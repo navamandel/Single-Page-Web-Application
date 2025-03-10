@@ -6,10 +6,10 @@ const server1 = {
         200: "SUCCESS"
     },
 
-    processRequest: function(method, data) {
+    processRequest: function(method, file, data) {
         
         if (method === "GET") {
-            return this.GET(data);
+            return this.GET(file);
         } else if (method === "POST") {
             return this.POST(data);
         } else if (method === "PUT") {

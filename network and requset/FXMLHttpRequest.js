@@ -38,7 +38,7 @@ class FXMLHttpRequest {
 
         const sendToNetwork = new Network();
         
-        setTimeout(() => {
+        //setTimeout(() => {
             this.readyState_ = 3;
             this.changeReadyStates("readystatechange");
 
@@ -63,7 +63,7 @@ class FXMLHttpRequest {
             });
             
             
-        }, this.delay*0);
+        //}, this.delay*0);
     }
 
     changeReadyStates(eventName) {

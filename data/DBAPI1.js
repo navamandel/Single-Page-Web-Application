@@ -9,32 +9,47 @@ const DB_API1 = {
     },
 
     get: function(user = null) {
+        console.log("it's in db1 ", user);
         if (!localStorage.getItem("Users")) {
             console.log("in db setting the users");
             localStorage.setItem("Users", "{}")
             return "{}";
         } 
 
-        if (user) {
-            let curUser = this.handleData("user", "", "get", false);
-            if (curUser) {
-                curUser = JSON.parse(curUser);
-                curUser = this.handleData(curUser, "", "get");
-                let temp = {"firstname": curUser.firstname,
-                        "lastname": curUser.lastname,
-                        "username": curUser.username,
-                        "password": curUser.password};
-                return JSON.stringify(temp);
-            } 
-            return 404;
+        if (user === "currentUser") {
+            console.log("it's starting to get the current user ", user);
+            let curUser = sessionStorage.getItem("currentUser");
+            console.log("key from session storage: ", sessionStorage.getItem("currentUser"));
+            let curUser_ = localStorage.getItem(curUser);
+            console.log("current user trimmed: ", curUser.trim());
+            //setTimeout(() => {
+                console.log("fetching from local storage: ", localStorage.getItem("n"));
+                console.log("fetching from local storage trimmed: ", localStorage.getItem(curUser_));
+            //}, 1000);
+            
+            if (!curUser) return;
+            //let curUser_ = JSON.parse(localStorage.getItem(curUser.trim()));
+            
+            
+            let temp = {"firstname": curUser_.firstname,
+                        "lastname": curUser_.lastname,
+                        "username": curUser_.username,
+                        "password": curUser_.password};
+            return JSON.stringify(temp);
+            
+                
+        } else if (user === "users") {
+            return localStorage.getItem("Users");
+        } else {
+            console.log("does it return the correct thing?? ", curUser);
+            return curUser_;
         }
-        
-        return localStorage.getItem("Users");
+            
     },
-
+    
     update: function(data) {
         sessionStorage.setItem("currentUser", JSON.stringify(data));
-
+        return 200;
     },
 
     delete: function(file, data) {

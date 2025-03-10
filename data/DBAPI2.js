@@ -11,7 +11,7 @@ const DB_API2 = {
                 data.id = this.taskId++;
                 index = user.tasks.findIndex(task => task.date > data.date);
                 index !== -1 ? user.tasks.splice(index-1, 0, data) : user.tasks.push(data);
-                return this.handleData(user.username, user, "set");
+                localStorage.setItem(user.username, JSON.stringify(user));
             case "courses":
                 data.id = this.courseId++;
                 let temp = user.courses
@@ -19,14 +19,15 @@ const DB_API2 = {
                     .find(course => course.time > data.time);
                 temp ? index = user.courses.findIndex(temp) : index = null;
                 index !== -1 ? user.courses.splice(index-1, 0, data) : user.courses.push(data);
-                return this.handleData(user.username, user, "set");
+                localStorage.setItem(user.username, JSON.stringify(user));
             default:
                 return 404;
         }
     },
 
     get: function(file, id = null) {
-        const user = JSON.parse(DB_API1.get("currentUser"));
+        const user = DB_API1.get("user");
+        console.log(user);
         let dataToReturn;
 
         if (id) {
@@ -40,11 +41,11 @@ const DB_API2 = {
         }
         
         if (!dataToReturn) return 404;
-        return dataToReturn;
+        return JSON.stringify(dataToReturn);
     },
 
     update: function(file, data) {
-        const user = JSON.parse(DB_API1.get("currentUser"));
+        const user = DB_API1.get("user");
         let index;
 
         switch (file) {
@@ -52,19 +53,21 @@ const DB_API2 = {
                 index = user.tasks.findIndex(task => task.id === data.id);
                 if (index === -1) return 404;
                 user.tasks.splice(index, 1, data);
-                return this.handleData(user.username, user, "set")
+                localStorage.setItem(user.username, JSON.stringify(user));
+                return 200;
             case "courses":
                 index = user.courses.findIndex(cors => cors.id === data.id);
                 if (index === -1) return 404;
                 user.courses.splice(index, 1, data);
-                return this.handleData(user.username, user, "set");
+                localStorage.setItem(user.username, JSON.stringify(user));
+                return 200;
             default:
                 return 404;
         }
     },
 
     delete: function(file, data) {
-        const user = JSON.parse(DB_API1.get("currentUser"));
+        const user = DB_API1.get("user");
         let index;
 
         switch (file) {
@@ -76,7 +79,7 @@ const DB_API2 = {
                 } else {
                     user.tasks = [];
                 }
-                this.handleData(user.username, user, "set");
+                localStorage.setItem(user.username, JSON.stringify(user));
                 return 200;
             case "courses":
                 if (data) {
@@ -86,7 +89,7 @@ const DB_API2 = {
                 } else {
                     user.courses = [];
                 }
-                this.handleData(user.username, user, "set");
+                localStorage.setItem(user.username, JSON.stringify(user));
                 return 200;
             }
     },

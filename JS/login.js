@@ -9,8 +9,18 @@ function loadLoginPage() {
         container.classList.add("active");
     });
 
+    document.getElementById("register-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        handleFormSubmission("Sign Up");
+    });
+
     loginBtn.addEventListener("click", () => {
         container.classList.remove("active");
+    });
+
+    document.getElementById("login-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        handleFormSubmission("Log In");
     });
 }
 
@@ -20,10 +30,14 @@ function handleFormSubmission(action){
             const username = document.getElementById("username").value.trim();
             const password = document.getElementById("pw").value.trim();
 
-            if (manageUsers("login", { username, password })) {
-                console.log("Login successful:", username);
-             loadHomePage();
-            } 
+            manageUsers("login", { username, password }, (res) => {
+                if (res) loadHomePage();
+            });
+
+            //if (manageUsers("login", { username, password }) {
+            //    console.log("Login successful:", username);
+            // loadHomePage();
+            //} 
 
         } else if (action === "Sign Up") {
             const firstname = document.getElementById("firstname").value.trim();
@@ -42,8 +56,12 @@ function handleFormSubmission(action){
                 return;
             }
 
-            if (manageUsers("register",{ firstname,lastname,username, password })) {
-                loadHomePage();
-            }
+            //if (manageUsers("register",{ firstname,lastname,username, password } )) {
+            //    loadHomePage();
+            //}
+
+            manageUsers("register",{ firstname,lastname,username, password }, (res) => {
+                if (res) loadHomePage();
+            });
         }
  }

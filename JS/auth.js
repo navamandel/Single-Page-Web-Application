@@ -1,6 +1,20 @@
 // Retrieve the current logged-in user
-function getCurrentUser() {
-    return fajax("GET", "currentUser") || null;
+function getCurrentUser(callback) {
+    //return fajax("GET", "currentUser") || null;
+    const fxhr = new FXMLHttpRequest();
+    fxhr.open("GET", "currentUser");
+
+    fxhr.onreadystatechange = function() {
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                if (callback) callback(JSON.parse(this.response));
+            } else {
+                return null;
+            }
+        }
+    };
+
+    fxhr.send(null, fxhr.onreadystatechange);
 }
 
 // Constructor function for a new user
@@ -16,21 +30,24 @@ function User(firstname, lastname, username, password) {
 }
 
 // Manage user actions (register, login, logout, retrieve user)
-function manageUsers(action, data) {
-    console.log(data);
+function manageUsers(action, data, callback) {
     
     switch (action) {
         case "register":
-            return registerUser(data);
+            registerUser(data, callback);
+            break;
         case "login":
-            return authenticateUser(data);
+            authenticateUser(data, callback);
+            break;
         case "logout":
-            return logoutUser();
+            logoutUser();
+            break;
         case "getCurrentUser":
-            return getCurrentUser();
+            getCurrentUser();
+            break;
         default:
             console.error("Unknown action in manageUsers");
-            return null;
+            if (callback) callback(null);
     }
 }
 
@@ -65,17 +82,33 @@ function saveUser(user) {
     };
 }
 
+function setCurrentUser(user, callback) {
+    const fxhr = new FXMLHttpRequest();
+    fxhr.open("PUT", "currentUser");
+
+    fxhr.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+             if (callback) callback(true);
+        } else if (this.readyState === 4) {
+            console.log("Error with server");
+        }
+
+   };
+
+   fxhr.send(user, fxhr.onreadystatechange);
+}
+
 // Authenticate user login
-function authenticateUser({ username, password }) {
+function authenticateUser({ username, password }, callback) {
     if (!username || !password) {
         alert("Username and password are required!");
-        return false;
+        if (callback) callback(false);
+        return;
     }
 
     let users;
     const fxhr = new FXMLHttpRequest();
     fxhr.open("GET", "users");
-    fxhr.send(null, fxhr.onreadystatechange);
 
     fxhr.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
@@ -87,15 +120,20 @@ function authenticateUser({ username, password }) {
             console.log(user);
 
             if (user && users[user] === password) {
-                fajax("PUT", "currentUser", user); // Save current session user
-                return true;
+                //fajax("PUT", "currentUser", user); // Save current session user
+                setCurrentUser(user, (res) => {
+                    if (res) return true;
+                });
+                if (callback) callback(true);
+            } else {
+                alert("Invalid username or password!");
+                if (callback) callback(false);
             }
-
-            alert("Invalid username or password!");
-            return false;
         }
-        console.log(this.response, this.readyState, this.status);
+
    };
+
+   fxhr.send(null, fxhr.onreadystatechange);
 
     /*console.log(users);
     
@@ -112,7 +150,7 @@ function authenticateUser({ username, password }) {
 }
 
 // Register a new user
-function registerUser({ firstname, lastname, username, password }) {
+function registerUser({ firstname, lastname, username, password }, callback) {
     console.log("im in here");
     if (!firstname || !lastname || !username || !password) {
         alert("All fields are required!");
@@ -130,16 +168,16 @@ function registerUser({ firstname, lastname, username, password }) {
                     users = Object.keys(JSON.parse(users));
                     if (users.some(user => user.username === username)) {
                         alert("Username already exists! Choose a different one.");
-                        return false;
+                        if (callback) callback(false);
                     }
                 }
                 const newUser = User(firstname, lastname, username, password);
                 saveUser(newUser);
                 alert("Registration successful! You can now log in.");
-                return true; 
+                if (callback) callback(true);
             } else {
                 alert("Error problem with server");
-                return false;
+                if (callback) callback(false);
             }
         }
     }
