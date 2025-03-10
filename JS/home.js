@@ -7,6 +7,7 @@ function loadHomePage() {
     let currentUser;  
     const fxhr = new FXMLHttpRequest();
     fxhr.open("GET", "currentUser");
+    showLoader();
     fxhr.onreadystatechange = function() {
         if (this.readyState === 4) {
             if (this.status === 200) {
@@ -42,9 +43,13 @@ function loadTodayCourses() {
     let allCourses; // = fajax("GET", "courses") || [];
     const fxhr = new FXMLHttpRequest(); 
     fxhr.open("GET", "courses");
+    showLoader();
+
     fxhr.onreadystatechange = function() {
         if (this.readyState === 4) {
             if (this.status === 200) {
+                hideLoader(); 
+
                 allCourses = JSON.parse(this.response);
 
                 const today = getCurrentDay();
@@ -151,8 +156,12 @@ function findTodayTasks(callback) {
     let tasks; // = fajax("GET", "tasks") || [];
     const fxhr = new FXMLHttpRequest();
     fxhr.open("GET", "tasks");
+    showLoader();
+
     fxhr.onreadystatechange = function() {
         if (this.readyState === 4) {
+            hideLoader(); 
+
             if (this.status === 200) {
                 tasks = JSON.parse(this.response);
                 const today = new Date().toISOString().split("T")[0];
@@ -256,8 +265,13 @@ function toggleTaskCompletion(task) {
             task.status = "Completed";
             const fxhr = new FXMLHttpRequest();
             fxhr.open("PUT", "tasks");
+            showLoader();
+
             fxhr.onreadystatechange = function() {
-                if (this.readyState === 4 && this.status === 200) loadTodayTasks();
+                if (this.readyState === 4 && this.status === 200) {
+                    hideLoader(); 
+                    loadTodayTasks();
+                }
             };
             fxhr.send(task);
         }
@@ -274,8 +288,13 @@ function deleteTask(task) {
         function () {
             const fxhr = new FXMLHttpRequest();
             fxhr.open("DELETE", "tasks");
+            showLoader();
+
             fxhr.onreadystatechange = function() {
-                if (this.readyState === 4 && this.status === 200) loadTodayTasks();
+                if (this.readyState === 4 && this.status === 200){
+                    hideLoader();  
+                    loadTodayTasks();
+                    }
             };
             fxhr.send(task);
         }

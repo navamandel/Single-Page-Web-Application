@@ -23,16 +23,21 @@ function initializePage(templateId) {
     document.getElementById("app").innerHTML = "";
     document.getElementById("app").appendChild(content);
 
+    document.getElementById("modal-container").innerHTML = document.getElementById("modal-template").innerHTML;
+    document.getElementById("modal-container").style.display="none"
+
+    // Ensure modals are hidden by default
+    document.getElementById("loading-overlay").style.display = "none";
     // Load common UI components
     if(templateId==="home" || templateId==="schedule" || templateId==="tasks" || templateId==="user" ){      
 
         document.getElementById("sidebar-container").innerHTML = document.getElementById("sidebar-template").innerHTML;
         document.getElementById("header-container").innerHTML = document.getElementById("header-template").innerHTML;
-        document.getElementById("modal-container").innerHTML = document.getElementById("modal-template").innerHTML;
-
-        // Ensure modals are hidden by default
         document.getElementById("custom-modal").style.display = "none";
+
     }
+   
+
 }
 
 
@@ -77,7 +82,7 @@ function noItemsMessage(container, message) {
 }
 
 
-function showCustomModal(title,message, onConfirm) {
+function showCustomModal(title,message, onConfirm=null) {
     const modal = document.getElementById("custom-modal");
     const modaltitle = document.getElementById("modal-title");
     const modalMessage = document.getElementById("modal-message");
@@ -87,7 +92,7 @@ function showCustomModal(title,message, onConfirm) {
     modaltitle.textContent=title;
     modalMessage.textContent = message;
     modal.style.display = "flex";  
-
+if(onConfirm){
     confirmBtn.onclick = function () {
         modal.style.display = "none";
         onConfirm();
@@ -97,5 +102,25 @@ function showCustomModal(title,message, onConfirm) {
         modal.style.display = "none";
     };
 }
+else{
+    confirmBtn.style.display="none"
+}
+}
+/**
+ * Displays an error message in the modal
+ */
+function showErrorMessage(message) {
+    showCustomModal("Error", message, null);
+}
 
+
+// Show loader function
+function showLoader() {
+    document.getElementById("loading-overlay").style.display = "flex";
+}
+
+// Hide loader function
+function hideLoader() {
+    document.getElementById("loading-overlay").style.display = "none";
+}
 

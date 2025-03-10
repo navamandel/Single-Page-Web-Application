@@ -13,8 +13,12 @@ function loadWeeklySchedule() {
 
     const fxhr = new FXMLHttpRequest();
     fxhr.open("GET", "courses");
+    showLoader()
+
     fxhr.onreadystatechange = function() {
         if (this.readyState === 4) {
+            hideLoader();
+
             if (this.status === 200) {
                 courses = JSON.parse(this.response);
                 // Check if there are no courses
@@ -221,8 +225,11 @@ function saveCourse(isEditMode, courseId = null) {
 
     const fxhr = new FXMLHttpRequest();
     fxhr.open(method, "courses");
+    showLoader()
     fxhr.onreadystatechange = function() {
         if (this.readyState === 4) {
+            hideLoader();
+
             if (this.status === 200) {
                 document.getElementById("custom-modal").style.display = "none";
                 loadWeeklySchedule();

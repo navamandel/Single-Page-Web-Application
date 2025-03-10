@@ -9,8 +9,12 @@ function loadTasksPage() {
     let tasks;// = fajax("GET", "tasks") || [];
     const fxhr = new FXMLHttpRequest();
     fxhr.open("GET", "tasks");
+    showLoader();
+
     fxhr.onreadystatechange = function() {
         if (this.readyState === 4) {
+            hideLoader();
+
             if (this.status === 200) {
                 tasks = JSON.parse(this.response);
                 // Check if there are no tasks
@@ -176,8 +180,12 @@ function saveTask(isEditMode, taskId) {
     }
     const fxhr = new FXMLHttpRequest();
     fxhr.open(method, "tasks");
+    showLoader();
+
     fxhr.onreadystatechange = function() {
         if (this.readyState === 4) {
+            hideLoader();
+
             if (this.status === 200) {
                 document.getElementById("custom-modal").style.display = "none";
                 loadTasksPage();
@@ -200,8 +208,11 @@ function deleteTask(task) {
             //fajax("DELETE", "tasks", task); // Send full task object for deletion
             const fxhr = new FXMLHttpRequest();
             fxhr.open("DELETE", "tasks");
+            showLoader();
+
             fxhr.onreadystatechange = function() {
                 if (this.readyState === 4) {
+                    hideLoader();
                     if (this.status === 200) {
                         loadTasksPage();
                     }
