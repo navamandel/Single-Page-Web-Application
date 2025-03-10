@@ -42,22 +42,7 @@ class FXMLHttpRequest {
 
         console.log(this.file);
         let destination = (this.file === "tasks" || this.file === "courses") ? "server2" : "server1";
-            
 
-        console.log("sending to network");
-
-        setTimeout(() => {
-            if (this.readyState !== 4) {
-                this.status_ = 408;
-                this.status_text_ = "REQUEST ABORTED";
-                this.readyState_ = 4;
-                this.changeReadyStates("readystatechange"); 
-                console.log("timeout has occured ", this.timeout);
-
-                sendToNetwork.abort();
-            }
-            
-        }, this.timeout*1000);
 
         sendToNetwork.send(this.method, this.file, destination, data, (serverResponse) => {
             console.log(serverResponse);
