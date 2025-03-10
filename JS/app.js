@@ -1,6 +1,6 @@
 
 document.addEventListener("DOMContentLoaded", () => {
-    if(getCurrentUser){
+    if(getCurrentUser()){
         loadHomePage();
     }
     else{
