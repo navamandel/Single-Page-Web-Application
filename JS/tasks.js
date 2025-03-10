@@ -248,6 +248,7 @@ function toggleTaskCompletion(task) {
         `Mark "${task.name}" as complete?`,
         function () {
             task.status = "Completed";
+            const fxhr = new FXMLHttpRequest();
             fxhr.open("PUT", "tasks");
             showLoader();
 
