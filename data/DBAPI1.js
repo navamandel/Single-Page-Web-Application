@@ -45,13 +45,17 @@ const DB_API1 = {
             sessionStorage.setItem("currentUser", data);
             return 200;
         }
-       
+        let users = JSON.parse(this.get("users"));
         let user = this.get("user");
         let data_ = JSON.parse(data);
 
         user["firstname"] = data_["firstname"];
         user["lastname"] = data_["lastname"];
-        if (data_["password"]) user["password"] = data_["password"];
+        if (data_["password"]) {
+            user["password"] = data_["password"];
+            users[user.username] = data_["password"];
+            localStorage.setItem("Users", JSON.stringify(users));
+        }
         localStorage.setItem(user.username, JSON.stringify(user));
         return 200;
     },

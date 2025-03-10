@@ -2,8 +2,8 @@ class Network{
     
     constructor() {
         this.delay = Math.floor(Math.random() * 3) + 1;
-        this.aborted = false;
-        
+        this.reqDropped = Math.random();
+        this.abort = this.reqDropped < 0.2
     }
 
     send(method, file, destination, data, callback) {
