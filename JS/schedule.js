@@ -175,7 +175,7 @@ function openCourseModal(course = null, index = null) {
     `;
 
     confirmBtn.onclick = function () {
-        saveCourse(isEditMode, course.id);
+        saveCourse(isEditMode, course ? course.id : null);
     };
     cancelBtn.onclick = function () {
         modal.style.display = "none";
@@ -195,7 +195,7 @@ function generateDayOptions(selectedDay = "Monday") {
 /**
  * Saves a course (either updating an existing one or adding a new one).
  */
-function saveCourse(isEditMode, courseId) {
+function saveCourse(isEditMode, courseId = null) {
     let courseData = {
         id: isEditMode ? courseId: "",
         name: document.getElementById("course-name").value.trim(),
@@ -210,14 +210,25 @@ function saveCourse(isEditMode, courseId) {
         return;
     }
 
+    let method;
     // Perform API call based on action type
     if (isEditMode) {
         courseData.id = courseId;
-        fajax("PUT", "courses", courseData);
+        method = "PUT";
     } else {
-        fajax("POST", "courses", courseData);
+        method = "POST";
     }
 
-    document.getElementById("custom-modal").style.display = "none";
-    loadWeeklySchedule();
+    const fxhr = new FXMLHttpRequest();
+    fxhr.open(method, "courses");
+    fxhr.onreadystatechange = function() {
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                document.getElementById("custom-modal").style.display = "none";
+                loadWeeklySchedule();
+            }
+        }
+    };
+    fxhr.send(courseData);
+
 }

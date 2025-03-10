@@ -13,7 +13,7 @@ const server1 = {
         } else if (method === "POST") {
             return this.POST(data);
         } else if (method === "PUT") {
-            return this.PUT(data);
+            return this.PUT(file, data);
         } else if (method === "DELETE") {
             return this.DELETE(data);
         } 
@@ -42,7 +42,7 @@ const server1 = {
         
     },
 
-    PUT: function(data) {
+    PUT: function(file, data) {
         /*const users = DB_API.get("users");
         if (data.updated.username && users.find(usr => usr === data.updated.username)) {
             return {"status": this.status_codes["ERROR_DATA_EXISTS"], "response": "ERROR_DATA_EXISTS"}; 
@@ -51,7 +51,7 @@ const server1 = {
             return {"status": this.status_codes["SUCCESS"], "response": "SUCCESS"};
         }*/
 
-       let status = DB_API1.update(data);
+       let status = DB_API1.update(file, data);
        return {"status": status, 
                "status_text": this.status_codes[status], 
                "response": this.status_codes[status]};
