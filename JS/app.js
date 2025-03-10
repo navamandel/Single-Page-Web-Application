@@ -120,6 +120,7 @@ function showCustomModal(title,message, onConfirm=null) {
   }
 else{
     confirmBtn.style.display="none";
+    cancelBtn.textContent="Ok"
 
     cancelBtn.onclick = function () {
         container.style.display = "none";
