@@ -26,7 +26,6 @@ class FXMLHttpRequest {
     }
 
     open(method, file) {
-        console.log("fajax");
         this.method = method;
         this.file = file;
         this.readyState_ = 1;
@@ -38,32 +37,30 @@ class FXMLHttpRequest {
 
         const sendToNetwork = new Network();
         
-        //setTimeout(() => {
-            this.readyState_ = 3;
-            this.changeReadyStates("readystatechange");
+        this.readyState_ = 3;
+        this.changeReadyStates("readystatechange");
 
-            let destination = (this.file === "tasks" || this.file === "courses") ? "server2" : "server1";
+        console.log(this.file);
+        let destination = (this.file === "tasks" || this.file === "courses") ? "server2" : "server1";
             
 
-            console.log("sending to network");
-            sendToNetwork.send(this.method, this.file, destination, data, (serverResponse) => {
-                console.log(serverResponse);
+        console.log("sending to network");
+        sendToNetwork.send(this.method, this.file, destination, data, (serverResponse) => {
+            console.log(serverResponse);
             
-                if (serverResponse) {
-                    console.log("received response from network");
-                    this.status_ = serverResponse["status"];
-                    this.status_text_ = serverResponse["status_text"];
-                    this.response_ = serverResponse["response"];
+            if (serverResponse) {
+                console.log("received response from network");
+                this.status_ = serverResponse["status"];
+                this.status_text_ = serverResponse["status_text"];
+                this.response_ = serverResponse["response"];
 
-                    this.readyState_ = 4;
-                    this.changeReadyStates("readystatechange");
-                }
-
-                if (callback) callback(serverResponse);
-            });
+            }
+            this.readyState_ = 4;
+            this.changeReadyStates("readystatechange"); 
+            console.log(this.method, this.file);
+                
+         });
             
-            
-        //}, this.delay*0);
     }
 
     changeReadyStates(eventName) {

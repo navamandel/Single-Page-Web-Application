@@ -14,7 +14,7 @@ class Network{
                 response = server2.processRequest(method, file, data);
             }
 
-            if (callback) callback(response);
+            callback(response);
         }, this.delay*1000);
         
 

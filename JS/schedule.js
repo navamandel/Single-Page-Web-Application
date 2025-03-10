@@ -8,16 +8,26 @@ function loadWeeklySchedule() {
 
 
     // Fetch courses from storage
-    let courses = fajax("GET", "courses") || [];
+    let courses;   // = fajax("GET", "courses") || [];
     let daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
-    // Check if there are no courses
-    if (courses.length === 0) {
-        noItemsMessage(document.getElementById("weekly-grid"), "No courses scheduled for this week.");
-    } 
+    const fxhr = new FXMLHttpRequest();
+    fxhr.open("GET", "courses");
+    fxhr.onreadystatechange = function() {
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                courses = JSON.parse(this.response);
+                // Check if there are no courses
+                if (courses.length === 0) {
+                    noItemsMessage(document.getElementById("weekly-grid"), "No courses scheduled for this week.");
+                } 
 
-    displaySchedule(daysOfWeek);
-    displayCourses(courses, daysOfWeek);
+                displaySchedule(daysOfWeek);
+                displayCourses(courses, daysOfWeek);
+            }
+        }
+    }
+    fxhr.send(null, fxhr.onreadystatechange);
 }
 
 /**

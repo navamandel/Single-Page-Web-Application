@@ -9,11 +9,18 @@ const DB_API2 = {
 
         switch (file) {
             case "tasks":
+                while (user.tasks.find(task => task.id === this.taskId)) {
+                    this.taskId++;
+                }
                 data.id = this.taskId++;
                 index = user.tasks.findIndex(task => task.date > data.date);
                 index !== -1 ? user.tasks.splice(index-1, 0, data) : user.tasks.push(data);
                 localStorage.setItem(user.username, JSON.stringify(user));
+                return 200;
             case "courses":
+                while (user.courses.find(course => course.id === this.courseId)) {
+                    this.courseId++;
+                }
                 data.id = this.courseId++;
                 let temp = user.courses
                     .filter(course => course.day === data.day)
@@ -21,6 +28,7 @@ const DB_API2 = {
                 temp ? index = user.courses.findIndex(temp) : index = null;
                 index !== -1 ? user.courses.splice(index-1, 0, data) : user.courses.push(data);
                 localStorage.setItem(user.username, JSON.stringify(user));
+                return 200;
             default:
                 return 404;
         }
@@ -79,9 +87,9 @@ const DB_API2 = {
         switch (file) {
             case "tasks":
                 if (data) {
-                    index = user.tasks.findIndex(task => task === data);
+                    index = user["tasks"].findIndex(task => task.id === data.id);
                     if (index === -1) return 404;
-                    user.tasks.splice(index, 1);
+                    user["tasks"].splice(index, 1);
                 } else {
                     user.tasks = [];
                 }
@@ -89,9 +97,9 @@ const DB_API2 = {
                 return 200;
             case "courses":
                 if (data) {
-                    index = user.courses.findIndex(cors => cors === data);
+                    index = user["courses"].findIndex(cors => cors.id === data.id);
                     if (index === -1) return 404;
-                    user.courses.splice(index, 1);
+                    user["courses"].splice(index, 1);
                 } else {
                     user.courses = [];
                 }

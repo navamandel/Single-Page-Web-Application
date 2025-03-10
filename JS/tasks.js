@@ -6,14 +6,27 @@ function loadTasksPage() {
     document.getElementById("custom-modal").style.display = "none";
 
     // Fetch and display tasks from storage
-    let tasks = fajax("GET", "tasks") || [];
+    let tasks;// = fajax("GET", "tasks") || [];
+    const fxhr = new FXMLHttpRequest();
+    fxhr.open("GET", "tasks");
+    fxhr.onreadystatechange = function() {
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                tasks = JSON.parse(this.response);
+                // Check if there are no tasks
+                if (tasks.length === 0) {
+                    noItemsMessage(document.getElementById("task-list-container"), "No tasks available.");
+                } else {
+                    displayTasks(tasks);
+                }
+            } else {
+                //alert("Error");
+            }
+        }
+    };
+    fxhr.send();
 
-    // Check if there are no tasks
-    if (tasks.length === 0) {
-        noItemsMessage(document.getElementById("task-list"), "No tasks available.");
-    }
-
-    displayTasks(tasks);
+    
 }
 
 function displayTasks(tasks) {
@@ -154,16 +167,29 @@ function saveTask(isEditMode, taskId) {
         alert("Please fill all fields!");
         return;
     }
+    let method;
 
     if (isEditMode) {
-        fajax("PUT", "tasks", updatedTask); // Update existing task
+        method = "PUT"; // Update existing task
     } else {
-        fajax("POST", "tasks", updatedTask); // Add new task
+        method = "POST";
     }
+    const fxhr = new FXMLHttpRequest();
+    fxhr.open(method, "tasks");
+    fxhr.onreadystatechange = function() {
+        if (this.readyState === 4) {
+            if (this.status === 200) {
+                document.getElementById("custom-modal").style.display = "none";
+                loadTasksPage();
+            }
+        }
+    };
+    fxhr.send(updatedTask);
+    
 
     // Hide the modal and refresh the page
-    document.getElementById("custom-modal").style.display = "none";
-    loadTasksPage();
+    //document.getElementById("custom-modal").style.display = "none";
+    //loadTasksPage();
 }
 
 function deleteTask(task) {
@@ -171,8 +197,18 @@ function deleteTask(task) {
         "Delete Task",
         `Are you sure you want to delete "${task.name}"?`,
         function () {
-            fajax("DELETE", "tasks", task); // Send full task object for deletion
-            loadTasksPage();
+            //fajax("DELETE", "tasks", task); // Send full task object for deletion
+            const fxhr = new FXMLHttpRequest();
+            fxhr.open("DELETE", "tasks");
+            fxhr.onreadystatechange = function() {
+                if (this.readyState === 4) {
+                    if (this.status === 200) {
+                        loadTasksPage();
+                    }
+                }
+            };
+            fxhr.send(task);
+            
         }
     );
 }

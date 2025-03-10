@@ -178,13 +178,18 @@ function loadTodayTasks() {
     findTodayTasks((res) => {
         if (res) todayTasks = res;
     });
-    console.log(todayTasks);
 
-    if (todayTasks.length === 0) {
-        noItemsMessage(taskList, "No tasks scheduled for today.");
-    } else {
-        todayTasks.forEach(task => taskList.appendChild(createTaskElement(task)));
-    }
+    const interval = setInterval(() => {
+        if (todayTasks) {
+            if (todayTasks.length === 0) {
+                noItemsMessage(taskList, "No tasks scheduled for today.");
+            } else {
+                todayTasks.forEach(task => taskList.appendChild(createTaskElement(task)));
+            }
+            clearInterval(interval);
+        }
+    }, 500);
+    
 }
 
 /**
@@ -210,7 +215,7 @@ function createTaskElement(task) {
 
     taskInfo.appendChild(taskTitle);
     taskInfo.appendChild(taskDescription);
-    taskInfo.appendChild(taskDate);
+    taskInfo.appendChild(taskStatus);
 
     const buttonContainer = document.createElement("div");
     buttonContainer.classList.add("task-buttons");
