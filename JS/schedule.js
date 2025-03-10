@@ -152,6 +152,7 @@ function openDeleteModal(course) {
  * Opens a modal to edit an existing course or add a new one.
  */
 function openCourseModal(course = null, index = null) {
+    const continer = document.getElementById("modal-container");
     const modal = document.getElementById("custom-modal");
     const modalMessage = document.getElementById("modal-message");
     const modalTitle = document.getElementById("modal-title");
@@ -182,8 +183,10 @@ function openCourseModal(course = null, index = null) {
         saveCourse(isEditMode, course ? course.id : null);
     };
     cancelBtn.onclick = function () {
-        modal.style.display = "none";
+        continer.style.display = "none";
     };
+
+    continer.style.display = "flex";  
 
     modal.style.display = "flex";  
 }

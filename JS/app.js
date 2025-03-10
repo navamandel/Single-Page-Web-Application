@@ -34,7 +34,6 @@ function initializePage(templateId) {
         document.getElementById("sidebar-container").innerHTML = document.getElementById("sidebar-template").innerHTML;
         document.getElementById("header-container").innerHTML = document.getElementById("header-template").innerHTML;
         document.getElementById("custom-modal").style.display = "none";
-
     }
    
 

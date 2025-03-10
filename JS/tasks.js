@@ -115,10 +115,13 @@ function displayTasks(tasks) {
 }
 
 function openTaskModal(task = null) {
+    console.log("in here");
+    const continer = document.getElementById("modal-container");
     const modal = document.getElementById("custom-modal");
     const modalTitle = document.getElementById("modal-title");
     const modalMessage = document.getElementById("modal-message");
     const confirmBtn = document.getElementById("confirm-btn");
+    const cancelBtn = document.getElementById("cancel-btn");
 
     // Determine if we are editing an existing task or adding a new one
     const isEditMode = task !== null;
@@ -143,12 +146,20 @@ function openTaskModal(task = null) {
         </div>
     `;
 
+    console.log(modal);
+
+
     // Set the action for the confirm button
     confirmBtn.onclick = function () {
         saveTask(isEditMode, task ? task.id : null);
     };
 
+    cancelBtn.onclick = function () {
+        continer.style.display = "none";
+    };
+
     // Show the modal
+    continer.style.display="flex"
     modal.style.display = "flex";
 }
 
