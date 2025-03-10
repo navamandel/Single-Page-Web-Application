@@ -6,7 +6,7 @@ class FXMLHttpRequest {
         this.readyState_ = 0;
         this.response_ = null;
         this.onreadystatechange = null;
-        this.delay = Math.floor(Math.random() * 3) + 1;
+        this.timeout = 2.7*10000000;
     }
 
     get status() {
@@ -45,6 +45,20 @@ class FXMLHttpRequest {
             
 
         console.log("sending to network");
+
+        setTimeout(() => {
+            if (this.readyState !== 4) {
+                this.status_ = 408;
+                this.status_text_ = "REQUEST ABORTED";
+                this.readyState_ = 4;
+                this.changeReadyStates("readystatechange"); 
+                console.log("timeout has occured ", this.timeout);
+
+                sendToNetwork.abort();
+            }
+            
+        }, this.timeout*1000);
+
         sendToNetwork.send(this.method, this.file, destination, data, (serverResponse) => {
             console.log(serverResponse);
             
@@ -60,6 +74,9 @@ class FXMLHttpRequest {
             console.log(this.method, this.file);
                 
          });
+
+        
+
             
     }
 
