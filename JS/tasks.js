@@ -24,7 +24,9 @@ function loadTasksPage() {
                     displayTasks(tasks);
                 }
             } else {
-                //alert("Error");
+                hideLoader();
+                showErrorMessage(this.status_text)
+                loadTasksPage();
             }
         }
     };
@@ -179,7 +181,7 @@ function saveTask(isEditMode, taskId) {
     };
 
     if (!updatedTask.name || !updatedTask.description || !updatedTask.date) {
-        alert("Please fill all fields!");
+        showErrorMessage("Please fill all fields!")
         return;
     }
     let method;
@@ -200,6 +202,8 @@ function saveTask(isEditMode, taskId) {
             if (this.status === 200) {
                 document.getElementById("custom-modal").style.display = "none";
                 loadTasksPage();
+            }else{
+                showErrorMessage("plese refresh and try again")
             }
         }
     };
@@ -227,6 +231,9 @@ function deleteTask(task) {
                     if (this.status === 200) {
                         loadTasksPage();
                     }
+                    else{
+                        showErrorMessage("plese refresh and try again")
+                    }
                 }
             };
             fxhr.send(task);
@@ -241,8 +248,22 @@ function toggleTaskCompletion(task) {
         `Mark "${task.name}" as complete?`,
         function () {
             task.status = "Completed";
-            fajax("PUT", "tasks", task); // Update task status
-            loadTasksPage();
+            fxhr.open("PUT", "tasks");
+            showLoader();
+
+            fxhr.onreadystatechange = function() {
+                if (this.readyState === 4 && this.status === 200) {
+                    hideLoader(); 
+                    loadTasksPage();
+                }else if(this.readyState===4)
+                {
+                    hideLoader();
+                    showErrorMessage("plese refresh and try again")
+                }
+            };
+            fxhr.send(task); // Update task status
+            
+            
         }
     );
 }

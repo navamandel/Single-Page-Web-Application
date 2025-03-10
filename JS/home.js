@@ -11,6 +11,7 @@ function loadHomePage() {
     fxhr.onreadystatechange = function() {
         if (this.readyState === 4) {
             if (this.status === 200) {
+                hideLoader();
                 currentUser = JSON.parse(this.response);
                 console.log("Current User: ", currentUser);
                 const username = currentUser ? currentUser.username : "User";
@@ -21,6 +22,11 @@ function loadHomePage() {
                 // Load today's courses and tasks
                 loadTodayCourses();
                 loadTodayTasks();
+            }
+            else{
+                hideLoader();
+                showErrorMessage(this.status_text);
+                loadHomePage();
             }
         }
     };
@@ -65,6 +71,10 @@ function loadTodayCourses() {
                     generateTimeSlots(timetableGrid);
                     displayTodayCourses(todayCourses);
                 }
+            }else{
+                hideLoader();
+                showErrorMessage(this.status_text);
+                loadHomePage();
             }
         }
     };
@@ -167,7 +177,10 @@ function findTodayTasks(callback) {
                 const today = new Date().toISOString().split("T")[0];
                 if (callback) callback(tasks.filter(task => task.date === today));
             } else {
+                hideLoader();
+                showErrorMessage(this.status_text);
                 if (callback) callback(false);
+                loadHomePage();
             }
         }
     };
@@ -271,7 +284,11 @@ function toggleTaskCompletion(task) {
                 if (this.readyState === 4 && this.status === 200) {
                     hideLoader(); 
                     loadTodayTasks();
+                }else if(this.readyState===4){
+                    hideLoader();
+                    showErrorMessage("plese refresh and try again");
                 }
+
             };
             fxhr.send(task);
         }

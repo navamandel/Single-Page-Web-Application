@@ -28,6 +28,10 @@ function loadWeeklySchedule() {
 
                 displaySchedule(daysOfWeek);
                 displayCourses(courses, daysOfWeek);
+            }else{
+                hideLoader();
+                showErrorMessage(this.status_text);
+                loadWeeklySchedule();
             }
         }
     }
@@ -214,7 +218,7 @@ function saveCourse(isEditMode, courseId = null) {
 
     // Validate required fields
     if (!courseData.name || !courseData.start || !courseData.end) {
-        alert("Please fill all fields!");
+        showErrorMessage("Please fill all fields!");
         return;
     }
 
@@ -237,6 +241,10 @@ function saveCourse(isEditMode, courseId = null) {
             if (this.status === 200) {
                 document.getElementById("custom-modal").style.display = "none";
                 loadWeeklySchedule();
+            }
+            else{
+                hideLoader();
+                showErrorMessage("plese refresh and try again");
             }
         }
     };
