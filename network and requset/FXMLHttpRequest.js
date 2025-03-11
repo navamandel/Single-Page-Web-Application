@@ -6,7 +6,6 @@ class FXMLHttpRequest {
         this.readyState_ = 0;
         this.response_ = null;
         this.onreadystatechange = null;
-        this.timeout = 2.7*10000000;
     }
 
     get status() {
@@ -45,10 +44,8 @@ class FXMLHttpRequest {
 
 
         sendToNetwork.send(this.method, this.file, destination, data, (serverResponse) => {
-            console.log(serverResponse);
             
             if (serverResponse) {
-                console.log("received response from network");
                 this.status_ = serverResponse["status"];
                 this.status_text_ = serverResponse["status_text"];
                 this.response_ = serverResponse["response"];
@@ -56,8 +53,6 @@ class FXMLHttpRequest {
             }
             this.readyState_ = 4;
             this.changeReadyStates("readystatechange"); 
-            console.log(this.method, this.file);
-                
          });
 
         

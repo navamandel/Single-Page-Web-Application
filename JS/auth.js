@@ -139,7 +139,7 @@ function authenticateUser({ username, password }, callback) {
             console.log(user);
 
             if (user && users[user] === password) {
-                //fajax("PUT", "currentUser", user); // Save current session user
+                // Save current session user
                 setCurrentUser(user, (res) => {
                     if (res) return true;
                 });

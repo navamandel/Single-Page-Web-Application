@@ -43,13 +43,6 @@ const server1 = {
     },
 
     PUT: function(file, data) {
-        /*const users = DB_API.get("users");
-        if (data.updated.username && users.find(usr => usr === data.updated.username)) {
-            return {"status": this.status_codes["ERROR_DATA_EXISTS"], "response": "ERROR_DATA_EXISTS"}; 
-        } else {
-            DB_API.update("users", data);
-            return {"status": this.status_codes["SUCCESS"], "response": "SUCCESS"};
-        }*/
 
        let status = DB_API1.update(file, data);
        return {"status": status, 

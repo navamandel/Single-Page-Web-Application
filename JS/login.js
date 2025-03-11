@@ -48,10 +48,6 @@ function handleFormSubmission(action){
                 if (res) loadHomePage();
             });
 
-            //if (manageUsers("login", { username, password }) {
-            //    console.log("Login successful:", username);
-            // loadHomePage();
-            //} 
 
         } else if (action === "Sign Up") {
             const firstname = document.getElementById("firstname").value.trim();
@@ -70,9 +66,6 @@ function handleFormSubmission(action){
                 return;
             }
 
-            //if (manageUsers("register",{ firstname,lastname,username, password } )) {
-            //    loadHomePage();
-            //}
 
             manageUsers("register",{ firstname,lastname,username, password }, (res) => {
                 if (res) loadLoginPage();

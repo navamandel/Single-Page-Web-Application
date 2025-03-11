@@ -10,9 +10,7 @@ const DB_API1 = {
     },
 
     get: function(user = null) {
-        console.log("it's in db1 ", user);
         if (!localStorage.getItem("Users")) {
-            console.log("in db setting the users");
             localStorage.setItem("Users", "{}")
             return "{}";
         } 

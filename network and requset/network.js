@@ -14,7 +14,6 @@ class Network{
 
             if (!this.aborted) {
                 if (destination === "server1") {
-                    console.log("in network, sending to server");
                     response = server1.processRequest(method,file, data);
                 }
         

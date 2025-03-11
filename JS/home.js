@@ -172,7 +172,7 @@ function getCurrentDay() {
  * Finds today's tasks
  */
 function findTodayTasks(callback) {
-    let tasks; // = fajax("GET", "tasks") || [];
+    let tasks; 
     const fxhr = new FXMLHttpRequest();
     fxhr.open("GET", "tasks");
     showLoader();
@@ -194,10 +194,8 @@ function findTodayTasks(callback) {
             }
         }
     };
-    fxhr.send(null, fxhr.onreadystatechange);
+    fxhr.send();
 
-    //const today = new Date().toISOString().split("T")[0];
-    //return tasks.filter(task => task.date === today);
 }
 
 /**

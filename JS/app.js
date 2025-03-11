@@ -55,25 +55,7 @@ function initializePage(templateId) {
 }
 
 
-//file : "users", "courses", "tasks"
-//methods: "GET", "POST"-> add, "PUT" -> update, "DELETE"
-function fajax(method, file, data = null) {
-    
-    let response_;
-    const fxhr = new FXMLHttpRequest();
-    fxhr.open(method, file);
-    fxhr.send(data);
-    
-    fxhr.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200){
-            response_ = this.response;
-        } else if (this.readyState === 4 && this.status === 404) {
-            return "ERROR not Found"
-        }
-    };
 
-    return response_;
-}
 
 
 function updatePageTitle(title, description) {

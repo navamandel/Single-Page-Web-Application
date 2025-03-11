@@ -146,8 +146,24 @@ function openDeleteModal(course) {
         'Delete Course',
         `Are you sure you want to delete "${course.name}" permanently?`,
         function () {
-            fajax("DELETE", "courses",course);
-            loadWeeklySchedule();
+            
+            const fxhr = new FXMLHttpRequest();
+            fxhr.open("DELETE", "courses");
+            showLoader();
+
+            fxhr.onreadystatechange = function() {
+                if (this.readyState === 4) {
+                    hideLoader();
+                    if (this.status === 200) {
+                        loadWeeklySchedule();
+                    }
+                    else{
+                        showErrorMessage("plese refresh and try again")
+                    }
+                }
+            };
+            fxhr.send(course); 
+            
         }
     );
 }
